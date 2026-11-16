@@ -364,6 +364,51 @@ def _stage_seconds(run_dir: Path) -> dict:
     return out
 
 
+def unclocked_gates(def_path: str | Path) -> list[str]:
+    """Clock-gating cells (ICGs) in a DEF whose CLK pin is on no net.
+
+    OpenROAD's clock_tree_synthesis moves the clock gates it drives, and on some
+    placements it puts two of them on the same spot and leaves one with no clock:
+    no warning, and the tree's own summary just counts one sink fewer (39 -> 38 on
+    ble_tx). Locking the gates in place (FIRM) before CTS avoided it in a test. Left
+    alone it surfaces only at signoff, as LibreLane's disconnected-pin check, after a
+    whole signoff run; until then the broken layout ranks like any other, and its
+    simulated activity is wrong (one byte's flip-flops never clocked)."""
+    text = Path(def_path).read_text()
+    comps, _, nets = text.partition("\nNETS")
+    gates = re.findall(r"^\s*-\s+(\S+)\s+\S*__icg\w*\s", comps, re.M)
+    clocked = set(re.findall(r"\(\s+(\S+)\s+CLK\s+\)", nets))
+    return [g for g in gates if g not in clocked]
+
+
+def _plain(x):
+    """A LibreLane state (or a part of one) as plain dicts and strings."""
+    from collections.abc import Mapping
+    if isinstance(x, Mapping):
+        return {str(k): _plain(v) for k, v in x.items()}
+    if isinstance(x, (list, tuple)):
+        return [_plain(v) for v in x]
+    return str(x) if isinstance(x, Path) else x
+
+
+def _with_activity(design_dir: Path, state, metrics: dict, work: Path) -> str | None:
+    """Replace the vectorless power in `metrics` with power from simulated activity
+    (pd/activity.py), for a design that has a power testbench. `state` is a
+    LibreLane state or a parsed state file. Returns an error message, or None.
+    A result is never scored on a mix of the two kinds of power figure: if the
+    measurement fails, the caller fails the run."""
+    from . import activity
+    if not activity.has_testbench(design_dir):
+        return None
+    try:
+        metrics.update(activity.measure(design_dir, _plain(state), work, metrics))
+        return None
+    except Exception as e:                      # a tool failure, reported, never hidden
+        return f"power from simulated activity failed: {type(e).__name__}: {e}"[:600]
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
+
+
 def _prune(run_dir: Path) -> int:
     size = sum(f.stat().st_size for f in run_dir.rglob("*") if f.is_file())
     shutil.rmtree(run_dir, ignore_errors=True)
@@ -379,9 +424,19 @@ def drop_snapshots(store: str | Path) -> int:
 # ------------------------------------------------------------------ the three runs
 def baseline(design_dir: str | Path, run_dir: str | Path, store: str | Path,
              keep_run_dir: bool = False, overrides: dict | None = None) -> RunResult:
-    """The untouched flow, end to end, signoff included: LibreLane as shipped on
-    the design's config. It is where every search starts and what every score
-    is a ratio to.
+    """The untouched flow: LibreLane as shipped on the design's config, taken
+    through signoff exactly as a search result is. It is where every search
+    starts and what every score is a ratio to.
+
+    It runs to global routing, as every branch does, and is then signed off by
+    signoff() below, with the same upsizing fix passes. It used to run
+    LibreLane end to end and take that run's signoff as is, with no fix passes:
+    the baseline then kept slow-corner violations one fix pass clears, so it
+    could never pass signoff itself and a search that found nothing better fell
+    back to a layout that had not passed; and every score and the 1.05x power
+    and die limits were ratios to a different kind of signoff from the result's.
+    On the pw4 baseline the fixes upsized two drivers and moved power by under
+    0.1% (1.18 mW either way), but nothing bounds that gap on another layout.
 
     `overrides` exists for tools/calibrate_clock.py, which runs the same design
     at several clock targets. A search never passes any."""
@@ -390,25 +445,46 @@ def baseline(design_dir: str | Path, run_dir: str | Path, store: str | Path,
     t0 = time.monotonic()
     try:
         with _console_to(run_dir.parent / f"{run_dir.name}.console.log"):
-            state = _flow(design_dir, overrides).start(_force_run_dir=str(run_dir))
+            state = _flow(design_dir, overrides).start(_force_run_dir=str(run_dir),
+                                                       to=S.IN_LOOP_STOP)
     except Exception as e:
         return RunResult(False, time.monotonic() - t0, error=f"{type(e).__name__}: {e}"[:600],
                          log_tail=_error_tail(run_dir))
-    seconds = time.monotonic() - t0
 
-    # The root is compared with nodes that stop after global routing, so it is
-    # ranked on the same post-GR numbers, not on its signoff numbers.
+    # The root is ranked on the same post-GR numbers as the nodes, which also stop
+    # after global routing.
     steps = _step_dirs(run_dir)
-    in_loop = _pick(state.metrics)
     i = _find(steps, S.IN_LOOP_STOP)
-    if i is not None and (steps[i] / "state_out.json").exists():
-        in_loop = _pick(json.loads((steps[i] / "state_out.json").read_text()).get("metrics"))
-
+    if i is None or not (steps[i] / "state_out.json").exists():
+        return RunResult(False, time.monotonic() - t0, error="the baseline flow stopped before "
+                         f"{S.IN_LOOP_STOP}", log_tail=_error_tail(run_dir))
     states, digests = _collect(run_dir, store, None, state)
+    states[END] = _snapshot(steps[i] / "state_out.json", store / END)
+    end = json.loads(Path(states[END]).read_text())
+    in_loop = _pick(end.get("metrics"))
     spent = _stage_seconds(run_dir)
     freed = 0 if keep_run_dir else _prune(run_dir)
-    return RunResult(True, seconds, in_loop, _pick(state.metrics), states, digests,
-                     stage_seconds=spent, freed_bytes=freed)
+
+    lost = unclocked_gates(end["def"]) if end.get("def") else []
+    if lost:
+        return RunResult(False, time.monotonic() - t0, freed_bytes=freed, error=(
+            f"CTS left {len(lost)} clock gate(s) with no clock in the baseline: "
+            f"{', '.join(lost[:5])}. Change the baseline's placement settings in config.yaml."))
+    err = _with_activity(design_dir, end, in_loop, run_dir.parent / f"{run_dir.name}_act")
+    if err:
+        return RunResult(False, time.monotonic() - t0, error=err, freed_bytes=freed)
+
+    # Signoff the way every candidate gets it: detailed routing, DRC, LVS, and the
+    # upsizing fix passes, with power from simulated activity.
+    so = signoff(design_dir, states[END], dict(overrides or {}),
+                 run_dir.parent / f"{run_dir.name}_signoff")
+    if not so.ok:
+        return RunResult(False, time.monotonic() - t0, error=f"baseline signoff: {so.error}",
+                         log_tail=so.log_tail, freed_bytes=freed + so.freed_bytes)
+    for stage, sec in (so.stage_seconds or {}).items():
+        spent[f"signoff {stage}"] = sec
+    return RunResult(True, time.monotonic() - t0, in_loop, so.signoff_metrics, states, digests,
+                     stage_seconds=spent, freed_bytes=freed + so.freed_bytes)
 
 
 # ------------------------------------------------------------------ the baseline, remembered
@@ -421,7 +497,8 @@ def baseline(design_dir: str | Path, run_dir: str | Path, store: str | Path,
 #
 #   LLM_PD_CACHE=/some/dir   put the cache somewhere else
 #   LLM_PD_NO_CACHE=1        always run the baseline again
-CACHE_FORMAT = 1
+CACHE_FORMAT = 3     # 2: power from simulated activity (pd/activity.py)
+                     # 3: the baseline signed off with the fix passes, like every result
 
 
 def cache_root() -> Path | None:
@@ -558,8 +635,21 @@ def fork(design_dir: str | Path, ancestor_state: str, stage: str, params: dict,
     i = _find(steps, S.IN_LOOP_STOP)
     if i is not None and (steps[i] / "state_out.json").exists():
         states[END] = _snapshot(steps[i] / "state_out.json", store / END)
+    metrics = _pick(state.metrics)
+    if END in states:
+        end = json.loads(Path(states[END]).read_text())
+        lost = unclocked_gates(end["def"]) if end.get("def") else []
+        if lost:
+            return RunResult(False, seconds, error=(
+                f"CTS left {len(lost)} clock gate(s) with no clock: {', '.join(lost[:5])}. "
+                "An OpenROAD fault that depends on the placement (it stacked two clock gates "
+                "on one spot and clocked only one); another placement avoids it."),
+                freed_bytes=_prune(run_dir))
+        err = _with_activity(design_dir, end, metrics, run_dir.parent / f"{run_dir.name}_act")
+        if err:
+            return RunResult(False, seconds, error=err, freed_bytes=_prune(run_dir))
     spent = _stage_seconds(run_dir)
-    return RunResult(True, seconds, _pick(state.metrics), {}, states, digests,
+    return RunResult(True, seconds, metrics, {}, states, digests,
                      stage_seconds=spent, freed_bytes=_prune(run_dir))
 
 
@@ -684,6 +774,10 @@ def signoff(design_dir: str | Path, end_state: str, params: dict,
         swaps += done
         freed += _prune(rd)
         start, frm, passes = nxt, S.BY_NAME["GR"].first_step, passes + 1
+    # Power from simulated activity on the last pass's routed netlist and its SPEF.
+    err = _with_activity(design_dir, state, sm, run_dir.parent / f"{run_dir.name}_act")
+    if err:
+        return RunResult(False, time.monotonic() - t0, error=err, freed_bytes=freed + _prune(rd))
     seconds = time.monotonic() - t0
     sm.update({"eco__passes": passes, "eco__upsized_cells": len(swaps)})
     spent = _stage_seconds(rd)

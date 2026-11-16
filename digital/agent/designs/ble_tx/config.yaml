@@ -25,9 +25,23 @@ CLOCK_PERIOD: 125
 # placement-density floor reaches its cap. The density here was that floor at 330 um
 # with the default margins (starting utilisation 67%, plus 5 points); it is above the
 # floor with the thinner margins below, so the baseline did not need to change.
+#
+# Power-search baseline: the bypass layout (runs/bypass_n18, wl012): the settings of
+# the second power search's answer (runs/pw2 n18) on the RTL with the Gaussian bypass,
+# with PL_WIRE_LENGTH_COEF 0.12 instead of 0.1, because at 0.1 CTS dropped the clock pin
+# of byte 15's clock gate (an OpenROAD fault on that placement). As the flow's own
+# baseline (run to global routing, then the same signoff as every result) this config
+# signs off clean: 58,952 um2 of cells, 1.178 mW measured from a simulated packet
+# (pd/activity.py). runs/pw4 searched from it and found 0.4% more (fanout 7).
+# Earlier: pw1's answer (fanout 6, wire length weight 0.3, CTS 138 / 85 / 320), and
+# before that n14 of the area search runs/cg330a (1.39 mW measured the same way).
+# The area-search baseline was DIE_AREA [0, 0, 330, 300], PL_TARGET_DENSITY_PCT 72,
+# MAX_FANOUT_CONSTRAINT 4 and LibreLane's PL_WIRE_LENGTH_COEF.
 FP_SIZING: absolute
-DIE_AREA: [0, 0, 330, 300]
-PL_TARGET_DENSITY_PCT: 72
+DIE_AREA: [0, 0, 247, 300]
+PL_TARGET_DENSITY_PCT: 80
+PL_TIMING_DRIVEN: false
+PL_WIRE_LENGTH_COEF: 0.12
 IO_DELAY_CONSTRAINT: 10
 
 # Core margins top and bottom, in rows (3.92 um each). LibreLane's default of 4 left
@@ -42,9 +56,9 @@ TOP_MARGIN_MULT: 2
 # (bit_idx fans out to the 39-byte PDU read mux). Repair with margin.
 # MAX_FANOUT_CONSTRAINT and DESIGN_REPAIR_MAX_SLEW_PCT are the baseline values; the
 # agent's placement branches override them (pd/stages.py). A result may have no slew or
-# capacitance violation at the typical or the slow corner (pd/ledger.py); this baseline
-# has some at the slow corner.
-MAX_FANOUT_CONSTRAINT: 4
+# capacitance violation at the typical or the slow corner (pd/ledger.py). The present
+# baseline has none after signoff's fix passes (one pass, two drivers upsized).
+MAX_FANOUT_CONSTRAINT: 6
 DESIGN_REPAIR_MAX_SLEW_PCT: 30
 GRT_DESIGN_REPAIR_MAX_SLEW_PCT: 30
 
@@ -63,8 +77,17 @@ EXTRA_EXCLUDED_CELLS:
 # design still overloaded its root at those values and 80 and 60 cleared it; the
 # clean 300 and 310 um runs of this netlist used 80 and 60. The CTS stage can change
 # both (pd/stages.py).
-CTS_CLK_MAX_WIRE_LENGTH: 80
-CTS_DISTANCE_BETWEEN_BUFFERS: 60
+# The power searches then signed off clean at 247 um with longer values: 138 and 85
+# (runs/pw1), then 145 and 110 with a 400 um cluster diameter, up to 40 sinks per leaf
+# buffer and clock buffers capped at clkbuf_2 (runs/pw2: 1.39 -> 1.18 mW measured from a
+# simulated packet, all of it in the clock network).
+CTS_CLK_MAX_WIRE_LENGTH: 145
+CTS_DISTANCE_BETWEEN_BUFFERS: 110
+CTS_SINK_CLUSTERING_MAX_DIAMETER: 400
+CTS_SINK_CLUSTERING_SIZE: 40
+# Clock buffers capped at clkbuf_2 (the agent's CTS_CLK_BUFFER_MAX_DRIVE 2): runs/pw2
+# removed the 14 clkbuf_8 of the main tree this way, most of its power cut.
+CTS_CLK_BUFFERS: [gf180mcu_fd_sc_mcu7t5v0__clkbuf_2]
 
 # Each of the 39 clock-gated PDU bytes gets its own small clock tree, built from
 # the root buffer cell. With the default clkbuf_16 those trees cost 25,000 um2.

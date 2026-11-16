@@ -45,7 +45,7 @@ NAVIGATOR = _join(
     """
 You steer a search over backend layouts of ble_tx, a small Bluetooth LE modulator on
 gf180mcuD. It shares a 1400 x 300 um tapeout slot with the rest of a Bluetooth chip,
-so the goal is the smallest die. Every move costs one flow run. The clock is fixed at
+and the score weights in objective say what to improve: in this search, power. Every move costs one flow run. The clock is fixed at
 8 MHz (125 ns). The die height is fixed; its width is the floorplan stage's knob, and
 read objective for the narrowest width allowed. Timing is a gate, not a goal: a
 result meets 8 MHz or it is out.
@@ -64,8 +64,10 @@ Read the score formula and weights from objective every time; higher score_est i
 better and the baseline n0 is 1.0. Only a candidate can be the final answer: its
 estimates must meet every threshold in limits (the 8 MHz setup floor at both
 corners, the hold floor, the power ceiling, and no slew or capacitance violations
-at the typical or the slow corner). The baseline itself breaks that last rule, so
-the search has to find a legal result before it can improve one. A result under not_candidates can never
+at the typical or the slow corner). The baseline's estimates may break that last
+rule (they come before signoff's fix passes, which the baseline's signoff, like
+every result's, includes), so the search may have to find a legal result before
+it can improve one. A result under not_candidates can never
 be the answer, so do not branch from it unless the stage you rerun could fix the
 reason given there.
 """,
@@ -80,15 +82,27 @@ result with a fanout limit at least as high, a slew margin no higher and a die n
 wider, so do not evaluate again until you have a result that is safer on one of them.
 """,
     """
-Die area carries the most weight, and only FP changes it; objective gives the
-baseline's width and the narrowest allowed. A narrower die is worth having only if
-it signs off clean, and a fuller core is harder to clean. A good order is to find a
-legal result on the baseline's die first, then try an FP branch from it so its
-settings come along. Tune on whatever width is legal: in earlier searches of this design the
-placement stage moved cell area by about 8%, through its fanout limit, while clock
-tree and global routing reruns moved it by about 1% at most. A smaller cell area also
-lets a later FP branch go narrower. Rerun the clock tree or global routing only to
-fine-tune a result that is already a candidate.
+Power carries the weight in this search. The baseline n0 is already the answer of two
+earlier power searches, on the current netlist (which adds a small Gaussian-bypass
+debug mux): 247 um wide, fanout 6, density 80, wire length weight 0.12, clock buffers
+capped at clkbuf_2, 40 sinks per leaf buffer, cluster diameter 400, clock wire length
+145, buffer spacing 110; 1.22 mW at signoff. Gains from here will be small, so look
+for what those searches did not try (placement density, slew margin, wire length
+weight, fewer sinks per buffer with shorter wires) as well as refining around n0.
+Die and cell area only have to stay within the limits. Power is measured from a
+simulated advertising packet on each result's own netlist, not guessed from default
+toggle rates, so a small change in it is real. Measured that way on a good earlier
+result (1.18 mW): about 49% is the clock network (clock buffers, clock wires and the
+clock pins of the 39 byte clock gates), about 31% flip-flops clocked every cycle, and
+about 19% logic. An earlier search lowered power 15% (1.39 to 1.18 mW, all of it in
+the clock network) by capping clock buffers at clkbuf_2, putting up to 40 sinks on a
+leaf buffer, a 400 um cluster diameter and wire length 145, buffer spacing 110. So the
+clock tree stage (CTS) is the main lever here: fewer, better-placed, weaker clock
+buffers and shorter clock wires; but its settings were chosen to clear a capacitance violation on the clock
+root buffer at the slow corner, so check any CTS change with an evaluation. Placement
+moves power through the repair buffers and wire length, and a wider die is not
+allowed. Find which CTS and PL directions lower power, evaluate the best candidates,
+and refine around them.
 """,
     """
 To branch, set action to branch and take node_id and stage from one entry of
@@ -132,6 +146,25 @@ hint_from_navigator for the aim, knobs for the legal ranges, values_on_this_path
 what the knobs are now, already_tried_at_this_stage for earlier tries and their
 results, numbers_at_this_node for the starting estimates, and
 log_of_this_stage_on_this_path for how the stage went.
+""",
+    """
+In this search only power is scored, measured from a simulated packet. About 49% of it
+is the clock network, 31% flip-flops clocked every cycle and 19% logic, so in the CTS
+stage aim for fewer and smaller
+clock buffers and shorter clock wires (CTS_CLK_MAX_WIRE_LENGTH and
+CTS_DISTANCE_BETWEEN_BUFFERS were 80 and 60 to keep the clock root buffer under its
+0.2 pF limit at the slow corner; the earlier power search signed off clean at 138 and
+85, and longer values still risk that violation), and
+in the placement stage aim for fewer repair buffers and less wire. CTS_CLK_BUFFER_MAX_DRIVE
+caps the clock buffer strength (8 allows clkbuf_8; an earlier search found 2 best,
+removing the 14 clkbuf_8 on the main tree), and a larger CTS_SINK_CLUSTERING_SIZE puts
+more sinks on each leaf buffer (40, the top, was best). Both raise the slow-corner slew
+and capacitance risk, so change them in steps. One known OpenROAD fault: CTS moves the
+39 byte clock gates, and on some placements it stacks two on one spot and leaves one
+with no clock. The program checks every branch for this and fails it right after
+global routing ("CTS left 1 clock gate(s) with no clock"). It depends on the placement,
+not on the CTS settings, so after such a failure change the placement (a small step in
+wire length weight or density) rather than retrying CTS on the same placement.
 """,
     """
 Aim for a higher score_est in the direction of the hint, keeping estimated setup

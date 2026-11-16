@@ -195,6 +195,11 @@ class Stage:
 
 WIDTH = "DIE_WIDTH_UM"
 DENSITY = "PL_TARGET_DENSITY_PCT"
+# Not a LibreLane variable either: the largest clock buffer drive, which
+# to_librelane turns into CTS_CLK_BUFFERS.
+CLKBUF_MAX = "CTS_CLK_BUFFER_MAX_DRIVE"
+CLKBUF_CELL = "gf180mcu_fd_sc_mcu7t5v0__clkbuf_{}"
+CLKBUF_DRIVES = (2, 3, 4, 8)
 
 STAGES: tuple[Stage, ...] = (
     Stage(
@@ -227,13 +232,13 @@ STAGES: tuple[Stage, ...] = (
                 "int", 30, 80, None,
                 "how tightly cells are packed, in percent"),
             "PL_WIRE_LENGTH_COEF": Param(
-                "float", 0.05, 0.50, 0.25,
+                "float", 0.05, 0.50, 0.12,
                 "global placement wirelength weight"),
             # The repair after placement (RepairDesignPostGPL) buffers every net that
             # breaks these limits, and on ble_tx it adds about 40% of the final cell
             # area. Both are set in designs/ble_tx/config.yaml; a branch overrides them.
             "MAX_FANOUT_CONSTRAINT": Param(
-                "int", 4, 10, 4,
+                "int", 4, 10, 6,
                 "most cells one net may drive before the repair after placement buffers it; "
                 "higher means fewer buffers and less area, and more slow-corner slew violations "
                 "for signoff to fix; at margin 30, 4 to 8 signed off clean and 10 did not"),
@@ -267,9 +272,26 @@ STAGES: tuple[Stage, ...] = (
             "CTS_DISTANCE_BETWEEN_BUFFERS": Param(
                 "int", 40, 200, None,
                 "spacing of the buffers CTS puts on long clock wires, in um"),
+            # The clock network is the largest share of the power (n14 of runs/cg330a:
+            # 0.80 of 1.39 mW measured from a simulated packet; 14 clkbuf_8 on the
+            # ungated trunk were the costliest cells). runs/pw2 capped the drive at 2
+            # and cut the clock network to 0.58 mW. LibreLane's CTS_CLK_BUFFERS is a
+            # list; this knob is its largest drive and the runner expands it
+            # (to_librelane).
+            CLKBUF_MAX: Param(
+                "int", 2, 8, 2,
+                "largest clock buffer CTS may use, by drive strength (the list is every "
+                "clkbuf_2, 3, 4, 8 up to it; the PDK's own list is clkbuf_2, 4, 8); smaller "
+                "means less clock power and more slow-corner slew and capacitance risk"),
+            "CTS_SINK_CLUSTERING_SIZE": Param(
+                "int", 10, 40, None,
+                "most flip-flops (or clock gates) in one leaf cluster, each cluster getting "
+                "one buffer; larger means fewer leaf buffers and less clock power, and a "
+                "longer, more loaded leaf wire"),
         },
-        note="Keeps the placement. Shapes the clock tree: how far its wires run and how "
-             "closely its buffers sit.",
+        note="Keeps the placement. Shapes the clock tree: how far its wires run, how "
+             "closely its buffers sit, how many sinks share a buffer and how strong its "
+             "buffers may be. The clock tree is the largest share of the power.",
     ),
     Stage(
         name="GR", title="global routing",
@@ -382,11 +404,16 @@ def density_floor(utilisation: float) -> int:
 
 
 def to_librelane(params: dict, die_height: float | None) -> dict:
-    """The settings as LibreLane reads them: DIE_WIDTH_UM becomes DIE_AREA."""
+    """The settings as LibreLane reads them: DIE_WIDTH_UM becomes DIE_AREA, and
+    CTS_CLK_BUFFER_MAX_DRIVE becomes the CTS_CLK_BUFFERS list up to that drive."""
     out = dict(params)
     w = out.pop(WIDTH, None)
     if w is not None and die_height:
         out["DIE_AREA"] = f"0 0 {w:g} {die_height:g}"
+    d = out.pop(CLKBUF_MAX, None)
+    if d is not None:
+        out["CTS_CLK_BUFFERS"] = " ".join(CLKBUF_CELL.format(x) for x in CLKBUF_DRIVES
+                                          if x <= int(d)) or CLKBUF_CELL.format(2)
     return out
 
 

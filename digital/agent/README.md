@@ -26,6 +26,29 @@ where the placement-density floor (starting utilisation + 5 points) reaches its
 cap of 75; `pd/stages.py` predicts that width from the baseline's floorplan. An
 FP branch can start from any result and keeps its settings for the later stages.
 
+### How power is measured
+
+Power (`P` above) comes from simulated switching activity, not from OpenSTA's
+vectorless default (`pd/activity.py`). Each result's own gate-level netlist is
+simulated with `designs/ble_tx/power_tb.v`, which sends one advertising packet
+(`power_pdu.hex`) at 8 MHz and dumps a VCD while the packet is on air; that VCD
+is loaded at the tt corner:
+
+- after global routing (every branch, and the baseline's ranking figures): OpenROAD
+  on the state's database, wires estimated from placement;
+- at signoff: OpenSTA with the extracted SPEF.
+
+It adds about 2 s per result. The vectorless figure is kept as
+`power__vectorless__total`, and the split as `power__activity__{clock,sequential,
+combinational}`. Why: the vectorless guess propagates default toggle rates around
+the CRC, whitening, counter and state-machine loops, and swings with netlist
+structure. Two layouts of nearly the same netlist were reported at 1.43 and 4.46 mW
+and measured from a packet at 1.18 and 1.22 mW. If the measurement fails the run
+fails, so a search never compares the two kinds of figure. A design without
+`power_tb.v` (such as `designs/spm`) keeps the vectorless figure.
+
+The packet window leaves out idle time; extend `power_tb.v` to score that too.
+
 A result scores 0 if any of these fail at signoff: setup slack below 0 ns
 against the 125 ns clock, at tt **or** at the worst corner (ss_125C_4v50);
 hold slack below 0 at tt; power or die area above 1.05x the baseline; any

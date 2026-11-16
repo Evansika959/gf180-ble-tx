@@ -614,7 +614,12 @@ def gate_8mhz() -> None:
     check("a tighter fanout limit, or a larger margin, is not predicted to fail",
           tf.why_not("n4") is None and tf.why_not("n5") is None)
     check("the baseline's signoff, which fixes nothing, predicts nothing",
-          tf.why_not("n6") is None and tf.why_not("n8") is None and tf.why_not("n7") is None)
+          tf.why_not("n6") is None and tf.why_not("n7") is None)
+    # n8 sets nothing, so it has the baseline's fanout and margin (pd/stages.py
+    # defaults, now 8 and 30): no safer than n1's (8, 50), which failed.
+    base_fo = S.BY_NAME["PL"].params[fo].default
+    check("an unset fanout limit and margin are read as the baseline's",
+          ("no safer" in (tf.why_not("n8") or "")) == (base_fo >= 8))
     tf.nodes["n4"].signoff_metrics = dict(lean, **{mx_s: 2})            # (6, 50), no fix run
     tf.add("n0", "PL", {fo: 6, mg: 45}, RunResult(True, 1.0, clean, {}))  # n9
     check("nor does any other signoff without the fix",
@@ -654,6 +659,83 @@ def environment() -> None:
         check("google-adk with Workflow, and litellm", False,
               f"{e} — use the venv: ./venv/bin/python -m pd.selftest --env")
     print(f"  key   {apikey.source()}  {apikey.masked() if apikey.load(required=False) else ''}")
+
+
+def activity_power() -> None:
+    """pd/activity.py: power from simulated activity replaces the vectorless figure."""
+    print("power from simulated activity")
+    import subprocess
+    import tempfile
+    from . import activity as A
+    from . import runner
+    report = ("Group                  Internal  Switching    Leakage      Total\n"
+              "Sequential             3.59e-04   8.17e-06   1.50e-07   3.67e-04  31.2%\n"
+              "Combinational          8.55e-05   1.43e-04   1.72e-07   2.29e-04  19.5%\n"
+              "Clock                  3.22e-04   2.58e-04   1.28e-07   5.80e-04  49.3%\n"
+              "Total                  7.66e-04   4.09e-04   4.49e-07   1.18e-03 100.0%\n")
+    got = A._parse(report)
+    check("a power report is read by group",
+          got["power__total"] == 1.18e-03 and got["power__activity__clock"] == 5.80e-04
+          and got["power__activity__combinational"] == 2.29e-04)
+    try:
+        A._parse("Error: no such file")
+        check("a tool run without a report is an error, not a zero", False)
+    except RuntimeError:
+        check("a tool run without a report is an error, not a zero", True)
+    check("the nominal SPEF is picked from a per-corner map",
+          A._nom_spef({"max_*": "/a/max.spef", "nom_*": "/a/nom.spef"}) == "/a/nom.spef"
+          and A._nom_spef(None) is None)
+    with tempfile.TemporaryDirectory() as tmp:
+        nl = Path(tmp) / "x.nl.v"
+        nl.write_text("module ble_tx (clk, gauss_bypass, wr_addr);\n input clk;\n"
+                      " input gauss_bypass;\n input [5:0] wr_addr;\n output busy;\nendmodule\n")
+        check("input ports are found for HAS_PORT_ defines",
+              A._input_ports(nl) == ["clk", "gauss_bypass", "wr_addr"])
+        plain = Path(tmp) / "spm"
+        plain.mkdir()
+        m = {"power__total": 0.5}
+        check("a design without power_tb.v keeps its vectorless power",
+              runner._with_activity(plain, {}, m, Path(tmp) / "w") is None and m == {"power__total": 0.5})
+    with tempfile.TemporaryDirectory() as tmp:
+        d = Path(tmp) / "x.def"
+        d.write_text("COMPONENTS 3 ;\n"
+                     "    - g_pdu\\[14\\].u_cg.u_icg gf180mcu_fd_sc_mcu7t5v0__icgtp_1 + PLACED ( 1 2 ) N ;\n"
+                     "    - g_pdu\\[15\\].u_cg.u_icg gf180mcu_fd_sc_mcu7t5v0__icgtp_1 + PLACED ( 1 2 ) N ;\n"
+                     "    - _101_ gf180mcu_fd_sc_mcu7t5v0__dffq_1 + PLACED ( 5 6 ) N ;\n"
+                     "END COMPONENTS\nNETS 2 ;\n"
+                     "    - clknet_leaf_1_clk ( clkbuf_leaf_1_clk Z ) ( g_pdu\\[14\\].u_cg.u_icg CLK ) ;\n"
+                     "    - g_pdu\\[15\\].u_cg.en ( g_pdu\\[15\\].u_cg.u_icg E ) ( _1042_ ZN ) ;\n"
+                     "END NETS\n")
+        check("a clock gate whose CLK is on no net is found (the CTS fault)",
+              runner.unclocked_gates(d) == ["g_pdu\\[15\\].u_cg.u_icg"])
+    run = Path(__file__).resolve().parents[1] / "runs"
+    for name, want in (("bypass_n18/run/full/35-openroad-cts", ["g_pdu\\[15\\].u_cg.u_icg"]),
+                       ("bypass_n18/signoff/wl012_final/def", [])):
+        real = next(iter((run / name).glob("*.def")), None) if (run / name).is_dir() else None
+        if real:
+            check(f"the clock-gate check on a real layout ({name.split('/')[0]}, "
+                  f"{'one gate lost' if want else 'all clocked'})", runner.unclocked_gates(real) == want)
+    ble = Path(__file__).resolve().parents[1] / "designs" / "ble_tx"
+    check("ble_tx has a power testbench and its stimulus",
+          A.has_testbench(ble) and (ble / "power_pdu.hex").is_file())
+    if "--env" in sys.argv:
+        check("icarus for the power testbench is installed",
+              Path(A.IVERILOG_DIR, "iverilog").exists() and Path(A.IVERILOG_DIR, "vvp").exists())
+        check("the PDK's functional cell models are there", all(p.exists() for p in A.CELL_MODELS))
+        rtl = Path(__file__).resolve().parents[2] / "rtl"
+        with tempfile.TemporaryDirectory() as tmp:
+            # The testbench against the RTL, cells not needed: it must finish a packet.
+            env = dict(os.environ, PATH=f"{A.IVERILOG_DIR}:{os.environ.get('PATH', '')}")
+            vcd = Path(tmp) / "a.vcd"
+            r = subprocess.run(["iverilog", "-g2012", f'-DVCD_OUT="{vcd}"', f'-DSTIM_DIR="{ble}"',
+                                "-DHAS_PORT_gauss_bypass", "-o", f"{tmp}/a.vvp", str(ble / A.TB_NAME),
+                                str(rtl / "ble_tx.v"), str(rtl / "ble_gauss_lut.v")],
+                               capture_output=True, text=True, env=env)
+            if not r.returncode:
+                r = subprocess.run(["vvp", "-n", f"{tmp}/a.vvp"], capture_output=True, text=True, env=env)
+            check("the power testbench sends a packet on the RTL",
+                  r.returncode == 0 and vcd.exists() and vcd.stat().st_size > 10_000,
+                  (r.stdout + r.stderr)[-300:])
 
 
 def floorplan() -> None:
@@ -739,6 +821,7 @@ if __name__ == "__main__":
     digest()
     cache()
     renames()
+    activity_power()
     if "--env" in sys.argv:
         environment()
     print()

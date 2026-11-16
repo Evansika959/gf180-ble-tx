@@ -259,8 +259,8 @@ class Tree:
         signed off with violations predicts the same for any node whose fanout limit
         is at least as high, whose margin is no larger and whose die is no wider.
         Only a signoff that fixed what it could counts (it reports
-        eco__passes, see runner.signoff): the baseline's own signoff does not upsize
-        drivers, so its violations say nothing about a node that will be. This is
+        eco__passes, see runner.signoff). The baseline is now signed off that way
+        too; a baseline cached before that (no eco__passes) predicts nothing. This is
         an assumption, not a measurement, and it saves a flow run per use; a node
         that was itself signed off is judged on what signoff found."""
         f, m, w = self.setting(nid, FANOUT), self.setting(nid, MARGIN), self.width(nid) or 0.0
