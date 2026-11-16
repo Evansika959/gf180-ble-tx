@@ -10,6 +10,10 @@
 //   air_bit  == air_bits(pdu, channel)
 //   fine_code == fine_codes(frequency_trajectory(bits, SPS), STEP_HZ)
 // fine_code for the first air bit appears 2 symbols + 1 clock after start.
+//
+// Debug: with gauss_bypass high the Gaussian filter is skipped and fine_code is
+// plain 2-FSK, +-125 (full deviation) for the whole of each symbol, aligned with
+// air_bit and the same symbols code_valid marks. Keep it low in normal use.
 
 `default_nettype none
 
@@ -29,6 +33,7 @@ module ble_tx #(
 
   input  wire [5:0]        channel,        // 37, 38 or 39 for advertising
   input  wire              start,          // pulse; ignored while busy
+  input  wire              gauss_bypass,   // debug: 2-FSK instead of Gaussian codes
 
   output wire              busy,
   output reg  signed [CODE_W-1:0] fine_code,
@@ -160,6 +165,13 @@ module ble_tx #(
     end
   endgenerate
 
+  // Gaussian bypass: the centre symbol (win[5:4] = {valid, bit}) at full
+  // deviation, 250 kHz / 2 kHz per LSB = 125, the LUT's own peak code. Zero
+  // outside the packet, as the LUT gives there.
+  localparam integer FULL_DEV = 125;
+  wire signed [CODE_W-1:0] fsk_code = !win[5] ? {CODE_W{1'b0}} :
+                                      win[4]  ? FULL_DEV : -FULL_DEV;
+
   always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       fine_code  <= {CODE_W{1'b0}};
@@ -167,7 +179,8 @@ module ble_tx #(
       air_bit    <= 1'b0;
       sym_strobe <= 1'b0;
     end else begin
-      fine_code  <= busy ? lut_code : {CODE_W{1'b0}};
+      fine_code  <= !busy        ? {CODE_W{1'b0}} :
+                    gauss_bypass ? fsk_code : lut_code;
       code_valid <= busy & win[5];
       air_bit    <= win[4];
       sym_strobe <= busy & win[5] & (phase == {PW{1'b0}});

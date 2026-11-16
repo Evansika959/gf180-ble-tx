@@ -77,6 +77,7 @@ async def setup(dut):
     dut.rst_n.value = 0
     dut.wr_en.value = 0
     dut.start.value = 0
+    dut.gauss_bypass.value = 0
     dut.channel.value = 37
     await ClockCycles(dut.clk, 3)
     dut.rst_n.value = 1
@@ -104,6 +105,25 @@ async def random_packets(dut):
         ch = rng.choice((37, 38, 39, rng.randrange(40)))
         bits, codes = await send(dut, pdu, ch)
         check(dut, pdu, ch, bits, codes)
+
+
+@cocotb.test()
+async def gauss_bypass_is_plain_fsk(dut):
+    """With gauss_bypass high: the same air bits and code_valid window, and each
+    symbol held at full deviation for all of its samples. Low again: shaped as before."""
+    await setup(dut)
+    sps = sps_of(dut)
+    addr = bytes.fromhex("C0FFEE180001")
+    pdu = adv_nonconn_pdu(addr, bytes([2, 0x01, 0x06]) + complete_local_name("GF180-BLE"))
+    dut.gauss_bypass.value = 1
+    for ch in (37, 39):
+        bits, codes = await send(dut, pdu, ch)
+        assert bits == air_bits(pdu, ch), f"air bits differ in bypass (ch {ch})"
+        want = [125 if b else -125 for b in bits for _ in range(sps)]
+        assert codes == want, f"bypass codes differ (ch {ch}): {len(codes)} vs {len(want)} samples"
+    dut.gauss_bypass.value = 0
+    bits, codes = await send(dut, pdu, 38)
+    check(dut, pdu, 38, bits, codes)
 
 
 def run(sps, gl=False):

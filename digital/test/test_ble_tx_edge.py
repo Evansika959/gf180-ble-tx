@@ -53,6 +53,7 @@ async def setup(dut):
     dut.rst_n.value = 0
     dut.wr_en.value = 0
     dut.start.value = 0
+    dut.gauss_bypass.value = 0
     dut.channel.value = 37
     await ClockCycles(dut.clk, 3)
     dut.rst_n.value = 1
