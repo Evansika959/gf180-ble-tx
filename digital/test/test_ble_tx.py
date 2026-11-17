@@ -145,7 +145,7 @@ def run(sps, gl=False):
         parameters=params,
         defines=defines,
         build_dir=HERE / f"sim_build_{tag}",
-        always=True,
+        always=True, waves=True,
         timescale=("1ns", "1ps"),
     )
     runner.test(
@@ -153,7 +153,7 @@ def run(sps, gl=False):
         test_module="test_ble_tx",
         test_dir=HERE,
         build_dir=HERE / f"sim_build_{tag}",
-        results_xml=f"results_{tag}.xml",
+        results_xml=f"results_{tag}.xml", waves=True,
         extra_env={"TB_SPS": str(sps)},
     )
 
