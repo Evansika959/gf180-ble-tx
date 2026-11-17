@@ -1,0 +1,38 @@
+** sch_path: /foss/designs/gf180-ble-tx/analog/dac/sim.sch
+**.subckt sim
+x1 vin vout INV
+V1 vin 0 PULSE(0 3.3 4u 1n 1n 4u 8u)
+C1 vout 0 1p
+**** begin user architecture code
+
+
+.include /foss/pdks/gf180mcuD/libs.tech/ngspice/design.ngspice
+
+.lib /foss/pdks/gf180mcuD/libs.tech/ngspice/sm141064.ngspice typical
+
+.lib /foss/pdks/gf180mcuD/libs.tech/ngspice/sm141064.ngspice mimcap_typical
+
+.control
+tran 1n 30u
+plot v(Vout) v(vin)
+.endc
+
+
+
+**** end user architecture code
+**.ends
+
+* expanding   symbol:  INV.sym # of pins=2
+** sym_path: /foss/designs/gf180-ble-tx/analog/dac/INV.sym
+** sch_path: /foss/designs/gf180-ble-tx/analog/dac/INV.sch
+.subckt INV VIN VOUT
+*.iopin VOUT
+*.iopin VIN
+XM1 VOUT VIN 0 0 nfet_03v3 L=0.28u W=0.36u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM2 VOUT VIN net1 net1 pfet_03v3 L=0.28u W=0.72u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+V1 net1 0 3.3
+.ends
+
+.end

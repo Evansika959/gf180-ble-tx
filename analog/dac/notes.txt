@@ -1,0 +1,2 @@
+ngspice was not loading the gf180mcuD library correctly, so 
+I had to explicitly load the capacitor

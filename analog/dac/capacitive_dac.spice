@@ -1,0 +1,71 @@
+** sch_path: /foss/designs/gf180-ble-tx/analog/dac/capacitive_dac.sch
+**.subckt capacitive_dac
+XC1 Vout B2 cap_mim_2f0fF c_width=10e-6 c_length=10e-6
+XC2 Vout B1 cap_mim_2f0fF c_width=5e-6 c_length=10e-6
+XC3 Vout B3 cap_mim_2f0fF c_width=10e-6 c_length=20e-6
+XC4 Vout B4 cap_mim_2f0fF c_width=20e-6 c_length=20e-6
+XC5 Vout B5 cap_mim_2f0fF c_width=20e-6 c_length=40e-6
+XC6 Vout B6 cap_mim_2f0fF c_width=40e-6 c_length=40e-6
+XC7 Vout B0 cap_mim_2f0fF c_width=5e-6 c_length=5e-6
+V2 net1 0 PULSE(0 3.3 0 1n 1n 125n 250n)
+C8 Vout 0 20f
+XC9 Vout B7 cap_mim_2f0fF c_width=40e-6 c_length=80e-6
+x1 net2 B0 net1 0 INV
+V1 net2 0 3.3
+V3 net3 0 PULSE(0 3.3 0 1n 1n 250n 500n)
+x2 net4 B1 net3 0 INV
+V4 net4 0 3.3
+V5 net5 0 PULSE(0 3.3 0 1n 1n 500n 1u)
+x3 net6 B2 net5 0 INV
+V6 net6 0 3.3
+V7 net7 0 PULSE(0 3.3 0 1n 1n 1u 2u)
+x4 net8 B3 net7 0 INV
+V8 net8 0 3.3
+V9 net9 0 PULSE(0 3.3 0 1n 1n 2u 4u)
+x5 net10 B4 net9 0 INV
+V10 net10 0 3.3
+V11 net11 0 PULSE(0 3.3 0 1n 1n 4u 8u)
+x6 net12 B5 net11 0 INV
+V12 net12 0 3.3
+V13 net13 0 PULSE(0 3.3 0 1n 1n 8u 16u)
+x7 net14 B6 net13 0 INV
+V14 net14 0 3.3
+V15 net15 0 PULSE(0 3.3 0 1n 1n 16u 32u)
+x8 net16 B7 net15 0 INV
+V16 net16 0 3.3
+**** begin user architecture code
+
+
+
+.include /foss/pdks/gf180mcuD/libs.tech/ngspice/design.ngspice
+.lib /foss/pdks/gf180mcuD/libs.tech/ngspice/sm141064.ngspice typical
+.lib /foss/pdks/gf180mcuD/libs.tech/ngspice/sm141064.ngspice mimcap_typical
+.lib /foss/pdks/gf180mcuD/libs.tech/ngspice/sm141064.ngspice cap_mim
+
+.control
+tran 0.05n 17u
+
+plot v(b0) v(b1)+4 v(b2)+8
+plot v(vout)
+
+.endc
+
+
+**** end user architecture code
+**.ends
+
+* expanding   symbol:  INV.sym # of pins=4
+** sym_path: /foss/designs/gf180-ble-tx/analog/dac/INV.sym
+** sch_path: /foss/designs/gf180-ble-tx/analog/dac/INV.sch
+.subckt INV VDD VOUT VIN GND
+*.iopin VOUT
+*.iopin VIN
+*.iopin GND
+*.iopin VDD
+XM1 VOUT VIN GND GND nfet_03v3 L=1u W=1.5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM2 VOUT VIN VDD VDD pfet_03v3 L=1u W=3u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+.ends
+
+.end
