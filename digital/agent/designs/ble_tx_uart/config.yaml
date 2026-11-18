@@ -5,15 +5,18 @@
 # clean cg330a signoff: at 6 the CTS buffers driving 8 sinks were reported as
 # fanout violations.
 #
-# Present values are the answer of the first search, runs/uart_s1 n12 (2026-11-18):
-# DESIGN_REPAIR_MAX_SLEW_PCT 22, CTS_CLK_MAX_WIRE_LENGTH 120,
-# CTS_DISTANCE_BETWEEN_BUFFERS 72, the rest as below. It signed off at 270 x 300 um
-# with no violation of any kind: 62,835 um2 of cells, about 1.57 mW measured from a
-# packet loaded over uart_rx, setup slack 98.4 ns and hold slack 0.18 ns at the worst
-# corner. Its post-layout netlist passes digital/test/test_ble_tx_uart.py with unit
-# delay and with the ss and ff SDF, and the GDS is clean in the foundry KLayout DRC
-# deck (variant D). The 270 um width is the density floor's limit (pd/stages.py,
-# DENSITY_FLOOR_CAP), so a search does not try narrower dies from here.
+# Present values: the answer of the first search, runs/uart_s1 n12 (2026-11-18),
+# with the slew margin raised from its 22 to 26. CTS_CLK_MAX_WIRE_LENGTH 120,
+# CTS_DISTANCE_BETWEEN_BUFFERS 72, the rest as below. After the busy pin was removed
+# (7 ports), 22 left 2 max-slew violations at max_ss after five fix passes; 26 and
+# 30 both signed off clean, 26 with fewer cells. At 26 (runs/uart_nobusy_m26) it
+# signed off at 270 x 300 um with no violation of any kind: 62,980 um2 of cells,
+# 1.59 mW measured from a packet loaded over uart_rx, setup slack 100.5 ns and hold
+# slack 0.22 ns at the worst corner, five fix passes. Its post-layout netlist passes
+# digital/test/test_ble_tx_uart.py with unit delay and with the ss and ff SDF, and
+# the GDS is clean in the foundry KLayout DRC deck (variant D). The 270 um width is
+# the density floor's limit (pd/stages.py, DENSITY_FLOOR_CAP), so a search does not
+# try narrower dies from here.
 DESIGN_NAME: ble_tx_uart
 VERILOG_FILES:
   - dir::../../../rtl/ble_uart.v
@@ -70,7 +73,7 @@ TOP_MARGIN_MULT: 2
 # capacitance violation at the typical or the slow corner (pd/ledger.py). The present
 # baseline has none after signoff's fix passes (one pass, two drivers upsized).
 MAX_FANOUT_CONSTRAINT: 8
-DESIGN_REPAIR_MAX_SLEW_PCT: 22
+DESIGN_REPAIR_MAX_SLEW_PCT: 26
 GRT_DESIGN_REPAIR_MAX_SLEW_PCT: 30
 
 # The repair after placement picks the delay cell dlyb_1 as its buffer: 35 um2

@@ -7,7 +7,6 @@ module ble_tx_uart(
   input clk,
   input rst_n,
   input uart_rx,
-  output busy,
   output[7:0] fine_code,
   output code_valid,
   output air_bit,
