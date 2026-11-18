@@ -31,16 +31,27 @@ module ble_uart #(
   input  wire       uart_rx,
 
   // to ble_tx
-  output reg        wr_en,
-  output reg  [5:0] wr_addr,
-  output reg  [7:0] wr_data,
+  output wire       wr_en,
+  output wire [5:0] wr_addr,
+  output wire [7:0] wr_data,
   output reg  [5:0] channel,
-  output reg        start
+  output wire       start
 );
 
-  localparam integer GAP_CLKS = GAP_BITS * CLKS_PER_BIT;
+  // Area notes: wr_en, wr_addr, wr_data and start are not registered again here.
+  // The received byte stays in sh until the next start bit (at least one bit
+  // time), so ble_tx takes it straight from sh in the byte_valid cycle. The frame
+  // gap counts bit times, using cnt as the prescaler while the line is idle.
+  // sh, nbit and addr are always written before they are read, so they have no reset.
+
   localparam integer CW = $clog2(CLKS_PER_BIT);
-  localparam integer GW = $clog2(GAP_CLKS + 1);
+  localparam integer GW = $clog2(GAP_BITS + 1);
+  localparam integer CNT_LAST_I = CLKS_PER_BIT - 1;
+  localparam integer CNT_HALF_I = CLKS_PER_BIT / 2 - 1;
+  localparam [CW-1:0] CNT_LAST = CNT_LAST_I[CW-1:0];     // a full bit
+  localparam [CW-1:0] CNT_HALF = CNT_HALF_I[CW-1:0];     // to the middle of the start bit
+  localparam [GW-1:0] GAP_END  = GAP_BITS[GW-1:0];
+  localparam [CW-1:0] CNT_ONE  = 1;
 
   // ------------------------------------------------------- synchronizer
   reg [1:0] rx_s;
@@ -53,80 +64,92 @@ module ble_uart #(
   localparam [1:0] R_IDLE = 2'd0, R_START = 2'd1, R_DATA = 2'd2, R_STOP = 2'd3;
 
   reg [1:0]    rstate;
-  reg [CW-1:0] cnt;
+  reg [CW-1:0] cnt;            // clocks left in this bit; free-runs while idle
+  reg          byte_valid;     // one-cycle pulse, byte in sh
   reg [2:0]    nbit;
   reg [7:0]    sh;
-  reg          byte_valid;     // one-cycle pulse, byte in sh
+
+  wire cnt_zero = (cnt == {CW{1'b0}});
 
   always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       rstate     <= R_IDLE;
       cnt        <= {CW{1'b0}};
-      nbit       <= 3'd0;
-      sh         <= 8'd0;
       byte_valid <= 1'b0;
     end else begin
       byte_valid <= 1'b0;
       case (rstate)
         R_IDLE:
           if (!rx) begin
-            cnt    <= CLKS_PER_BIT / 2 - 1;
+            cnt    <= CNT_HALF;
             rstate <= R_START;
-          end
-        R_START:
-          if (cnt == 0) begin
-            if (!rx) begin
-              cnt    <= CLKS_PER_BIT - 1;
-              nbit   <= 3'd0;
-              rstate <= R_DATA;
-            end else
-              rstate <= R_IDLE;               // glitch, not a start bit
           end else
-            cnt <= cnt - 1'b1;
+            cnt <= cnt_zero ? CNT_LAST : cnt - CNT_ONE;   // bit-time ticks for the gap
+        R_START:
+          if (cnt_zero) begin
+            cnt    <= CNT_LAST;
+            rstate <= rx ? R_IDLE : R_DATA;   // high again: a glitch, not a start bit
+          end else
+            cnt <= cnt - CNT_ONE;
         R_DATA:
-          if (cnt == 0) begin
-            sh   <= {rx, sh[7:1]};            // LSB first
-            cnt  <= CLKS_PER_BIT - 1;
-            nbit <= nbit + 1'b1;
+          if (cnt_zero) begin
+            cnt <= CNT_LAST;
             if (nbit == 3'd7) rstate <= R_STOP;
           end else
-            cnt <= cnt - 1'b1;
+            cnt <= cnt - CNT_ONE;
         R_STOP:
-          if (cnt == 0) begin
+          if (cnt_zero) begin
             byte_valid <= rx;                 // low stop bit: framing error, drop
             rstate     <= R_IDLE;
           end else
-            cnt <= cnt - 1'b1;
+            cnt <= cnt - CNT_ONE;
       endcase
     end
   end
 
+  // Data path, no reset: nbit is cleared by every start bit before it is used,
+  // and sh is only read in the byte_valid cycle after 8 data bits.
+  always @(posedge clk) begin
+    if (rstate == R_START)
+      nbit <= 3'd0;
+    else if (rstate == R_DATA && cnt_zero) begin
+      sh   <= {rx, sh[7:1]};                  // LSB first
+      nbit <= nbit + 1'b1;
+    end
+  end
+
   // ------------------------------------------------------- frame gap
+  // Counts idle bit times up to GAP_BITS; any activity clears it.
   reg [GW-1:0] gap;
-  wire         gap_done = (gap == GAP_CLKS);
+  wire         gap_done = (gap == GAP_END);
   always @(posedge clk or negedge rst_n)
-    if (!rst_n)                        gap <= GAP_CLKS;   // first byte is a command
+    if (!rst_n)                        gap <= GAP_END;    // first byte is a command
     else if (!rx || rstate != R_IDLE)  gap <= {GW{1'b0}};
-    else if (!gap_done)                gap <= gap + 1'b1;
+    else if (cnt_zero && !gap_done)    gap <= gap + 1'b1;
 
   // ------------------------------------------------------- command decode
   reg       cmd_byte;          // next byte is a command
   reg       pdu_burst;         // data bytes go to the PDU buffer
-  reg [5:0] addr;
+  reg [5:0] addr;              // set by every write command before use
+
+  wire is_cmd = byte_valid &&  cmd_byte;
+  wire is_dat = byte_valid && !cmd_byte;
+
+  assign wr_en   = is_dat && pdu_burst;
+  assign wr_addr = addr;
+  assign wr_data = sh;
+  assign start   = is_cmd && sh[7] && sh[0];
+
+  always @(posedge clk)
+    if (is_cmd && sh[7:6] == 2'b00) addr <= sh[5:0];
+    else if (wr_en)                 addr <= addr + 1'b1;
 
   always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       cmd_byte  <= 1'b1;
       pdu_burst <= 1'b0;
-      addr      <= 6'd0;
-      wr_en     <= 1'b0;
-      wr_addr   <= 6'd0;
-      wr_data   <= 8'd0;
       channel   <= 6'd37;
-      start     <= 1'b0;
     end else begin
-      wr_en <= 1'b0;
-      start <= 1'b0;
       if (gap_done) begin
         cmd_byte  <= 1'b1;
         pdu_burst <= 1'b0;
@@ -134,17 +157,8 @@ module ble_uart #(
       if (byte_valid) begin
         cmd_byte <= 1'b0;
         if (cmd_byte) begin
-          pdu_burst <= 1'b0;
-          case (sh[7:6])
-            2'b00:   begin pdu_burst <= 1'b1; addr <= sh[5:0]; end
-            2'b01:   channel <= sh[5:0];
-            default: start <= sh[0];
-          endcase
-        end else if (pdu_burst) begin
-          wr_en   <= 1'b1;
-          wr_addr <= addr;
-          wr_data <= sh;
-          addr    <= addr + 1'b1;
+          pdu_burst <= (sh[7:6] == 2'b00);
+          if (sh[7:6] == 2'b01) channel <= sh[5:0];
         end
       end
     end
