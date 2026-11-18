@@ -19,7 +19,6 @@ ble_tx.busy
 ble_tx.code_valid
 ble_tx.sym_strobe
 ble_tx.air_bit
-ble_tx.gauss_bypass
 @424
 ble_tx.fine_code[7:0]
 @10424

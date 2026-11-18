@@ -50,7 +50,7 @@ module tb_tx_chain #(
   ble_tx #(.SPS(SPS)) u_mod (
     .clk(clk), .rst_n(rst_n),
     .wr_en(wr_en), .wr_addr(wr_addr), .wr_data(wr_data),
-    .channel(channel), .start(start), .gauss_bypass(1'b0),
+    .channel(channel), .start(start),
     .busy(busy), .fine_code(fine_code), .code_valid(code_valid),
     .air_bit(air_bit), .sym_strobe(sym_strobe)
   );
