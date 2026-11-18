@@ -34,8 +34,8 @@ def _join(*parts: str) -> str:
 # folder replaces them with its own navigator_notes.txt (see for_design below).
 _BLE_TX_NOTES = """
 Power carries the weight in this search. The baseline n0 is already the answer of two
-earlier power searches, on the current netlist (which adds a small Gaussian-bypass
-debug mux): 247 um wide, fanout 6, density 80, wire length weight 0.12, clock buffers
+earlier power searches, made on a netlist that still had a small Gaussian-bypass
+debug mux (since removed, 595 um2 less at synthesis): 247 um wide, fanout 6, density 80, wire length weight 0.12, clock buffers
 capped at clkbuf_2, 40 sinks per leaf buffer, cluster diameter 400, clock wire length
 145, buffer spacing 110; 1.22 mW at signoff. Gains from here will be small, so look
 for what those searches did not try (placement density, slew margin, wire length

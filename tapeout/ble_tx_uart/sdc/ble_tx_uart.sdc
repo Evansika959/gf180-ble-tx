@@ -12,7 +12,6 @@ set_propagated_clock [get_clocks {clk}]
 set_input_delay 12.0000 -clock [get_clocks {clk}] -add_delay [get_ports {rst_n}]
 set_input_delay 12.0000 -clock [get_clocks {clk}] -add_delay [get_ports {uart_rx}]
 set_output_delay 12.0000 -clock [get_clocks {clk}] -add_delay [get_ports {air_bit}]
-set_output_delay 12.0000 -clock [get_clocks {clk}] -add_delay [get_ports {busy}]
 set_output_delay 12.0000 -clock [get_clocks {clk}] -add_delay [get_ports {code_valid}]
 set_output_delay 12.0000 -clock [get_clocks {clk}] -add_delay [get_ports {fine_code[0]}]
 set_output_delay 12.0000 -clock [get_clocks {clk}] -add_delay [get_ports {fine_code[1]}]
@@ -27,7 +26,6 @@ set_output_delay 12.0000 -clock [get_clocks {clk}] -add_delay [get_ports {sym_st
 # Environment
 ###############################################################################
 set_load -pin_load 0.0729 [get_ports {air_bit}]
-set_load -pin_load 0.0729 [get_ports {busy}]
 set_load -pin_load 0.0729 [get_ports {code_valid}]
 set_load -pin_load 0.0729 [get_ports {sym_strobe}]
 set_load -pin_load 0.0729 [get_ports {fine_code[7]}]

@@ -26,8 +26,9 @@ Write the PDU bytes (`header0`, `length`, payload) with `wr_en`/`wr_addr`/`wr_da
 set `channel`, pulse `start`. The length byte is latched at `start`; payload
 bytes are read live, so only rewrite ones already sent. `busy` stays high
 until the last code is out. The
-first code arrives 2 symbols + 1 clock after `start`, because each output
-sample needs the symbols up to 1.5 symbols ahead.
+first air bit's code (`code_valid` high) arrives 3 symbols + 1 clock after the
+clock edge that takes `start`; `fine_code` ramps into it from about 2 symbols,
+because each output sample needs the symbols up to 1.5 symbols ahead.
 
 `SPS` is the clock in MHz (samples per 1 us symbol). The default is 8: an
 8 MHz clock gives one code per clock for the 8 MS/s DAC. SPS 2 and 16 are also
@@ -38,8 +39,12 @@ generated and tested. Codes are 8-bit signed, 2 kHz/LSB, range -125..125
 
 `ble_tx_uart` puts a UART receiver in front of `ble_tx`, so the chip takes its
 packet, channel and start over one input pin, `uart_rx`. Any MCU UART TX pin or
-a USB-serial adapter can drive it. Watch the `busy` output to know when the
-packet has gone out; there is no read path.
+a USB-serial adapter can drive it. It is the only connection to the controller:
+there is no read path and no `busy` pin. A packet's air time is fixed by its
+length, so once the start byte has been sent, wait `(10 + len) x 8 + 10` us
+(`len` = the PDU's length byte), or 400 us for any packet, before loading the
+next PDU or starting again. A start sent while a packet is on air is ignored, and
+a PDU written then can corrupt the packet on air.
 
 `uart_rx` is standard 8N1: idle high, a low start bit, 8 data bits LSB first, a
 high stop bit. A bit lasts `CLKS_PER_BIT` clocks (default 8), so the baud rate
@@ -49,7 +54,7 @@ so the sender may be about 3% off. Pulses shorter than half a bit are ignored
 and a byte with a low stop bit is dropped.
 
 A pause marks where a command starts: once the line has been idle for
-`GAP_BITS` bit times (default 20, 20 us at 1 Mbaud), the next byte is a command.
+`GAP_BITS` bit times (default 20, 20 us at 1 Mbaud; counted to within one bit), the next byte is a command.
 Send each command as one burst, then pause.
 
 | Command | Data | Action |
@@ -65,11 +70,12 @@ import serial, time
 s = serial.Serial("/dev/tty.usbserial", 1_000_000)
 s.write(bytes([0x00]) + pdu); time.sleep(0.001)   # PDU from address 0
 s.write(bytes([0x40 | 37]));  time.sleep(0.001)   # channel 37
-s.write(bytes([0x81]))                            # start
+s.write(bytes([0x81])); s.flush()                 # start
+time.sleep(400e-6)                                # on air; then the next packet
 ```
 
-`busy`, `fine_code`, `code_valid`, `air_bit` and `sym_strobe` come straight out
-of `ble_tx`, as described above.
+`fine_code`, `code_valid`, `air_bit` and `sym_strobe` come straight out of
+`ble_tx`, as described above; its `busy` stays inside the block.
 
 ## Running (IIC-OSIC-TOOLS container, from `/foss/designs/gf180-ble-tx/digital`)
 

@@ -9,7 +9,10 @@
 // Matches model/ble_adv.py bit for bit:
 //   air_bit  == air_bits(pdu, channel)
 //   fine_code == fine_codes(frequency_trajectory(bits, SPS), STEP_HZ)
-// fine_code for the first air bit appears 2 symbols + 1 clock after start.
+// Latency, counted from the clock edge that samples start: fine_code starts its
+// Gaussian ramp into the first air bit about 2 symbols later, and code_valid rises
+// (with sym_strobe on the first air bit's own symbol) 3 symbols + 1 clock later,
+// measured at SPS 2, 8 and 16. Each sample needs the symbols up to 1.5 ahead.
 
 `default_nettype none
 

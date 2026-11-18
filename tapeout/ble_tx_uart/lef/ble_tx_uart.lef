@@ -53,18 +53,9 @@ MACRO ble_tx_uart
     ANTENNADIFFAREA 0.897600 ;
     PORT
       LAYER Metal3 ;
-        RECT 269.440 165.760 270.000 166.320 ;
+        RECT 269.440 166.880 270.000 167.440 ;
     END
   END air_bit
-  PIN busy
-    DIRECTION OUTPUT ;
-    USE SIGNAL ;
-    ANTENNADIFFAREA 0.897600 ;
-    PORT
-      LAYER Metal2 ;
-        RECT 211.680 299.440 212.240 300.000 ;
-    END
-  END busy
   PIN clk
     DIRECTION INPUT ;
     USE SIGNAL ;
@@ -79,8 +70,8 @@ MACRO ble_tx_uart
     USE SIGNAL ;
     ANTENNADIFFAREA 0.897600 ;
     PORT
-      LAYER Metal2 ;
-        RECT 182.560 299.440 183.120 300.000 ;
+      LAYER Metal3 ;
+        RECT 269.440 226.240 270.000 226.800 ;
     END
   END code_valid
   PIN fine_code[0]
@@ -88,8 +79,8 @@ MACRO ble_tx_uart
     USE SIGNAL ;
     ANTENNADIFFAREA 0.897600 ;
     PORT
-      LAYER Metal3 ;
-        RECT 269.440 282.240 270.000 282.800 ;
+      LAYER Metal2 ;
+        RECT 250.880 0.000 251.440 0.560 ;
     END
   END fine_code[0]
   PIN fine_code[1]
@@ -97,8 +88,8 @@ MACRO ble_tx_uart
     USE SIGNAL ;
     ANTENNADIFFAREA 0.897600 ;
     PORT
-      LAYER Metal3 ;
-        RECT 269.440 285.600 270.000 286.160 ;
+      LAYER Metal2 ;
+        RECT 262.080 0.000 262.640 0.560 ;
     END
   END fine_code[1]
   PIN fine_code[2]
@@ -107,7 +98,7 @@ MACRO ble_tx_uart
     ANTENNADIFFAREA 0.897600 ;
     PORT
       LAYER Metal2 ;
-        RECT 201.600 299.440 202.160 300.000 ;
+        RECT 226.240 0.000 226.800 0.560 ;
     END
   END fine_code[2]
   PIN fine_code[3]
@@ -116,7 +107,7 @@ MACRO ble_tx_uart
     ANTENNADIFFAREA 0.897600 ;
     PORT
       LAYER Metal2 ;
-        RECT 204.960 299.440 205.520 300.000 ;
+        RECT 225.120 0.000 225.680 0.560 ;
     END
   END fine_code[3]
   PIN fine_code[4]
@@ -124,8 +115,8 @@ MACRO ble_tx_uart
     USE SIGNAL ;
     ANTENNADIFFAREA 0.897600 ;
     PORT
-      LAYER Metal3 ;
-        RECT 269.440 284.480 270.000 285.040 ;
+      LAYER Metal2 ;
+        RECT 227.360 0.000 227.920 0.560 ;
     END
   END fine_code[4]
   PIN fine_code[5]
@@ -133,8 +124,8 @@ MACRO ble_tx_uart
     USE SIGNAL ;
     ANTENNADIFFAREA 0.897600 ;
     PORT
-      LAYER Metal3 ;
-        RECT 269.440 275.520 270.000 276.080 ;
+      LAYER Metal2 ;
+        RECT 264.320 0.000 264.880 0.560 ;
     END
   END fine_code[5]
   PIN fine_code[6]
@@ -142,8 +133,8 @@ MACRO ble_tx_uart
     USE SIGNAL ;
     ANTENNADIFFAREA 0.897600 ;
     PORT
-      LAYER Metal3 ;
-        RECT 269.440 283.360 270.000 283.920 ;
+      LAYER Metal2 ;
+        RECT 263.200 0.000 263.760 0.560 ;
     END
   END fine_code[6]
   PIN fine_code[7]
@@ -152,7 +143,7 @@ MACRO ble_tx_uart
     ANTENNADIFFAREA 0.897600 ;
     PORT
       LAYER Metal2 ;
-        RECT 197.120 299.440 197.680 300.000 ;
+        RECT 239.680 0.000 240.240 0.560 ;
     END
   END fine_code[7]
   PIN rst_n
@@ -161,7 +152,7 @@ MACRO ble_tx_uart
     ANTENNAGATEAREA 0.498500 ;
     PORT
       LAYER Metal3 ;
-        RECT 269.440 225.120 270.000 225.680 ;
+        RECT 269.440 13.440 270.000 14.000 ;
     END
   END rst_n
   PIN sym_strobe
@@ -169,8 +160,8 @@ MACRO ble_tx_uart
     USE SIGNAL ;
     ANTENNADIFFAREA 0.897600 ;
     PORT
-      LAYER Metal2 ;
-        RECT 185.920 299.440 186.480 300.000 ;
+      LAYER Metal3 ;
+        RECT 269.440 225.120 270.000 225.680 ;
     END
   END sym_strobe
   PIN uart_rx
@@ -179,7 +170,7 @@ MACRO ble_tx_uart
     ANTENNAGATEAREA 0.498500 ;
     PORT
       LAYER Metal2 ;
-        RECT 10.080 299.440 10.640 300.000 ;
+        RECT 20.160 299.440 20.720 300.000 ;
     END
   END uart_rx
   OBS
@@ -188,37 +179,36 @@ MACRO ble_tx_uart
       LAYER Metal1 ;
         RECT 6.720 7.540 263.200 290.380 ;
       LAYER Metal2 ;
-        RECT 7.980 299.140 9.780 299.860 ;
-        RECT 10.940 299.140 182.260 299.860 ;
-        RECT 183.420 299.140 185.620 299.860 ;
-        RECT 186.780 299.140 196.820 299.860 ;
-        RECT 197.980 299.140 201.300 299.860 ;
-        RECT 202.460 299.140 204.660 299.860 ;
-        RECT 205.820 299.140 211.380 299.860 ;
-        RECT 212.540 299.140 263.060 299.860 ;
-        RECT 7.980 7.650 263.060 299.140 ;
+        RECT 0.140 299.140 19.860 299.440 ;
+        RECT 21.020 299.140 269.780 299.440 ;
+        RECT 0.140 0.860 269.780 299.140 ;
+        RECT 0.140 0.560 224.820 0.860 ;
+        RECT 228.220 0.560 239.380 0.860 ;
+        RECT 240.540 0.560 250.580 0.860 ;
+        RECT 251.740 0.560 261.780 0.860 ;
+        RECT 265.180 0.560 269.780 0.860 ;
       LAYER Metal3 ;
-        RECT 0.560 286.460 269.440 293.860 ;
-        RECT 0.560 284.220 269.140 286.460 ;
-        RECT 0.860 283.060 269.140 284.220 ;
-        RECT 0.560 281.940 269.140 283.060 ;
-        RECT 0.560 276.380 269.440 281.940 ;
-        RECT 0.560 275.220 269.140 276.380 ;
-        RECT 0.560 225.980 269.440 275.220 ;
-        RECT 0.560 224.820 269.140 225.980 ;
-        RECT 0.560 166.620 269.440 224.820 ;
-        RECT 0.560 165.460 269.140 166.620 ;
-        RECT 0.560 7.700 269.440 165.460 ;
+        RECT 0.090 284.220 269.830 290.220 ;
+        RECT 0.860 283.060 269.830 284.220 ;
+        RECT 0.090 227.100 269.830 283.060 ;
+        RECT 0.090 224.820 269.140 227.100 ;
+        RECT 0.090 167.740 269.830 224.820 ;
+        RECT 0.090 166.580 269.140 167.740 ;
+        RECT 0.090 14.300 269.830 166.580 ;
+        RECT 0.090 13.140 269.140 14.300 ;
+        RECT 0.090 0.700 269.830 13.140 ;
       LAYER Metal4 ;
-        RECT 11.340 13.530 21.940 281.030 ;
-        RECT 24.140 13.530 25.240 281.030 ;
-        RECT 27.440 13.530 175.540 281.030 ;
-        RECT 177.740 13.530 178.840 281.030 ;
-        RECT 181.040 13.530 260.260 281.030 ;
+        RECT 8.540 9.610 21.940 288.310 ;
+        RECT 24.140 9.610 25.240 288.310 ;
+        RECT 27.440 9.610 175.540 288.310 ;
+        RECT 177.740 9.610 178.840 288.310 ;
+        RECT 181.040 9.610 260.820 288.310 ;
       LAYER Metal5 ;
-        RECT 29.180 182.370 260.340 243.670 ;
-        RECT 29.180 179.070 260.340 179.570 ;
-        RECT 29.180 29.930 260.340 176.270 ;
+        RECT 9.020 182.370 242.420 261.670 ;
+        RECT 9.020 179.070 242.420 179.570 ;
+        RECT 9.020 29.190 242.420 176.270 ;
+        RECT 9.020 25.890 242.420 26.390 ;
+        RECT 9.020 15.530 242.420 23.090 ;
   END
 END ble_tx_uart
 END LIBRARY

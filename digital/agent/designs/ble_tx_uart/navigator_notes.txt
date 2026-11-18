@@ -1,13 +1,16 @@
 This block is the BLE modulator (ble_tx) and its UART receiver, flattened into one
-netlist: about 50,200 um2 of cells after synthesis, of which the UART is about
-4,600 um2. The baseline n0 is the answer of the first search of this design: a die
-270 um wide, fanout limit 8, slew margin 22, clock wire length 120, buffer spacing
-72, clock buffers capped at clkbuf_2, 40 sinks per leaf buffer. It signed off with
-no violation of any kind: about 62,800 um2 of cells, about 1.57 mW, setup slack about
-98 ns, hold slack 0.18 ns. That search got its gains from the clock tree, around
-wire lengths of 115 to 125. A plain LibreLane run of this netlist failed detailed
-placement at 260 um, and 270 um is where the density floor reaches its cap, so the
-narrowest legal width is 270 um unless that cap is raised.
+netlist with seven ports and no busy pin: about 50,000 um2 of cells after
+synthesis, of which the UART is about 4,500 um2. The baseline n0 is the answer of
+the first search of this design with a safer slew margin: a die 270 um wide,
+fanout limit 8, slew margin 26, clock wire length 120, buffer spacing 72, clock
+buffers capped at clkbuf_2, 40 sinks per leaf buffer. It signed off with no
+violation of any kind after five fix passes: about 63,000 um2 of cells, 1.59 mW,
+setup slack about 100 ns, hold slack 0.22 ns. A slew margin of 22 left two
+slow-corner slew violations that the fix passes could not clear, so treat margins
+below 26 as risky and evaluate them. The first search got its gains from the clock
+tree, around wire lengths of 115 to 125. A plain LibreLane run of this netlist
+failed detailed placement at 260 um, and 270 um is where the density floor reaches
+its cap, so the narrowest legal width is 270 um unless that cap is raised.
 
 Die area carries the most weight, but read objective for the narrowest width
 allowed before branching FP: if it is still 270 um, the gains left are in cell area

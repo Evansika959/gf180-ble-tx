@@ -19,11 +19,11 @@ Timing is a pass/fail gate and the score is power, die area and standard-cell ar
     score = (P0 / P)^0.1 x (D0 / D)^0.6 x (A0 / A)^0.3      1.0 = LibreLane untouched
 
 The whole Bluetooth chip has a 1400 x 300 um tapeout slot, and this block should
-take as little of it as it can. The baseline uses the whole slot (`DIE_AREA` in
-`designs/ble_tx/config.yaml`). The search keeps the 300 um height and narrows the
+take as little of it as it can. The baseline's die is `DIE_AREA` in the design's
+`config.yaml` (247 x 300 um for ble_tx). The search keeps the 300 um height and narrows the
 die with the floorplan stage's `DIE_WIDTH_UM`. The narrowest width allowed is
 where the placement-density floor (starting utilisation + 5 points) reaches its
-cap of 75; `pd/stages.py` predicts that width from the baseline's floorplan. An
+cap of 80 (`DENSITY_FLOOR_CAP`); `pd/stages.py` predicts that width from the baseline's floorplan. An
 FP branch can start from any result and keeps its settings for the later stages.
 
 ### How power is measured
@@ -113,7 +113,7 @@ The signed-off layout of the answer is in `runs/NAME/signoff/<node>_final/gds/bl
 
 - `designs/ble_tx/` added; it reads the RTL from `../rtl`, and an edit there
   invalidates the remembered baseline (`pd/runner.py`, `baseline_key`).
-- Timing weight 0, power 0.1, area 0.9; the 8 MHz setup gate added to the signoff
+- Timing weight 0, power 0.1, die area 0.6, cell area 0.3 (`WEIGHTS`); the 8 MHz setup gate added to the signoff
   gate and to the candidate screen (`pd/ledger.py`, `pd/tree.py`).
 - The gate and the clock are shown to the agents (`pd/episode.py`) and the
   prompts say that slack beyond 8 MHz earns nothing (`agents/prompts.py`).

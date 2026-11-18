@@ -1,7 +1,8 @@
 // Activity for power scoring (pd/activity.py), for ble_tx_uart: load the demo
 // advertising PDU (power_pdu.hex, from model/ble_adv.py) through uart_rx at
 // 1 Mbaud (8N1, 8 clocks a bit), set channel 37, start, and dump the block's
-// switching only while the packet is on air, as designs/ble_tx/power_tb.v does.
+// switching from the start byte until the last code of the packet. There is no
+// busy pin, so code_valid marks the packet.
 //
 // Read by the agent flow, not by the cocotb tests. Defines from pd/activity.py:
 //   VCD_OUT   where to write the VCD
@@ -13,7 +14,7 @@ module power_tb;
   localparam integer GAP_BITS = 24;  // over the RTL's 20-bit frame gap
 
   reg clk = 1'b0, rst_n = 1'b0, uart_rx = 1'b1;
-  wire busy, code_valid, air_bit, sym_strobe;
+  wire code_valid, air_bit, sym_strobe;
   wire [7:0] fine_code;
   reg [7:0] pdu [0:38];
   integer i;
@@ -22,7 +23,7 @@ module power_tb;
 
   ble_tx_uart dut (
     .clk(clk), .rst_n(rst_n), .uart_rx(uart_rx),
-    .busy(busy), .fine_code(fine_code), .code_valid(code_valid),
+    .fine_code(fine_code), .code_valid(code_valid),
     .air_bit(air_bit), .sym_strobe(sym_strobe));
 
   task send_byte(input [7:0] b);
@@ -49,11 +50,12 @@ module power_tb;
     gap;
     send_byte(8'h40 | 8'd37);                          // channel 37
     gap;
-    send_byte(8'h81);                                  // start
-    wait (busy);
     $dumpfile(`VCD_OUT);
     $dumpvars(0, power_tb.dut);
-    wait (!busy);
+    send_byte(8'h81);                                  // start
+    wait (code_valid);
+    wait (!code_valid);
+    @(negedge clk);
     $dumpoff;
     $finish;
   end

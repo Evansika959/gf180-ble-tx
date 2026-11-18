@@ -93,13 +93,28 @@ async def capture(dut):
         assert cycles < 600 * sps_of(), "packet never finished"
 
 
+async def no_packet(dut, cycles):
+    """code_valid stays low for `cycles` clocks: nothing went on air. There is no
+    busy pin, so this is how the tests see that a start was not taken."""
+    for _ in range(cycles):
+        await RisingEdge(dut.clk)
+        await ReadOnly()
+        assert not int(dut.code_valid.value), "a packet started"
+    await Timer(1, unit="ns")                           # leave the read-only phase
+
+
+def wait_us(pdu_len):
+    """How long the controller waits, once it has sent the start byte, before the
+    next PDU: (10 + len) bytes of 8 us on air, plus 10 us for the latency (start
+    is taken half a bit before the stop bit ends, and the first code comes 3
+    symbols later)."""
+    return (10 + pdu_len) * 8 + 10
+
+
 async def start_and_capture(dut, err=0.0):
     cap = cocotb.start_soon(capture(dut))
     await uart_bytes(dut, [0x81], err)
     bits, codes = await cap
-    await RisingEdge(dut.clk)
-    await ReadOnly()
-    assert not int(dut.busy.value)
     await pause()
     return bits, codes
 
@@ -193,8 +208,7 @@ async def glitches_and_framing_errors(dut):
     await pause()
     # a start command with a bad stop bit: must not start
     await uart_bytes(dut, [0x81], stop=[0])
-    await pause()
-    assert not int(dut.busy.value)
+    await no_packet(dut, (GAP_BITS + 4) * CLKS_PER_BIT)
     await set_channel(dut, 38)
     bits, codes = await start_and_capture(dut)
     check(pdu, 38, bits, codes)
@@ -217,22 +231,24 @@ async def frame_gap(dut):
     await set_channel(dut, 37)
     bits, codes = await start_and_capture(dut)
     check(pdu, 37, bits, codes)
-    # busy rises within a bit time of the start byte's stop bit, before any code
+    # the first code comes a fixed time after the start byte's stop bit: start is
+    # taken mid stop bit, then the first bit needs 3 symbols to reach the centre of
+    # the Gaussian window
     cap = cocotb.start_soon(capture(dut))
     await uart_bytes(dut, [0x81])
-    for _ in range(CLKS_PER_BIT):
+    limit = 3 * sps_of() + CLKS_PER_BIT
+    for n in range(limit):
         await RisingEdge(dut.clk)
         await ReadOnly()
-        if int(dut.busy.value):
+        if int(dut.code_valid.value):
             break
-    assert int(dut.busy.value), "busy did not rise after start"
-    assert not int(dut.code_valid.value)
+    assert int(dut.code_valid.value), f"no code within {limit} clocks of the start byte"
     await cap
 
 
 @cocotb.test()
 async def reset_mid_packet(dut):
-    """Reset while a packet is on air: busy, code_valid and fine_code drop at once,
+    """Reset while a packet is on air: code_valid and fine_code drop at once,
     the channel goes back to 37, and the PDU buffer (not reset) can be sent again
     without reloading."""
     await setup(dut)
@@ -240,13 +256,13 @@ async def reset_mid_packet(dut):
     await write_pdu(dut, pdu)
     await set_channel(dut, 39)
     await uart_bytes(dut, [0x81])
-    while not int(dut.busy.value):
+    while not int(dut.code_valid.value):
         await RisingEdge(dut.clk)
     await ClockCycles(dut.clk, 100 * sps_of())
     dut.rst_n.value = 0
     await RisingEdge(dut.clk)
     await ReadOnly()
-    assert not int(dut.busy.value) and not int(dut.code_valid.value)
+    assert not int(dut.code_valid.value)
     assert dut.fine_code.value.to_signed() == 0
     await ClockCycles(dut.clk, 2)
     dut.rst_n.value = 1
@@ -268,8 +284,7 @@ async def reset_mid_byte(dut):
     await ClockCycles(dut.clk, 2)
     dut.rst_n.value = 1
     await stray
-    await pause()
-    assert not int(dut.busy.value), "a half-received start byte started a packet"
+    await no_packet(dut, (GAP_BITS + 4) * CLKS_PER_BIT)  # the cut start byte did nothing
     await set_channel(dut, 38)
     bits, codes = await start_and_capture(dut)
     check(pdu, 38, bits, codes)
@@ -277,15 +292,15 @@ async def reset_mid_byte(dut):
 
 @cocotb.test()
 async def idle_outputs_quiet(dut):
-    """With nothing sent, and again after a packet, the outputs hold still: busy,
-    code_valid, sym_strobe low and fine_code 0, with no UART traffic."""
+    """With nothing sent, and again after a packet, the outputs hold still:
+    code_valid and sym_strobe low and fine_code 0, with no UART traffic."""
     await setup(dut)
 
     async def quiet(cycles):
         for _ in range(cycles):
             await RisingEdge(dut.clk)
             await ReadOnly()
-            assert not int(dut.busy.value) and not int(dut.code_valid.value)
+            assert not int(dut.code_valid.value)
             assert not int(dut.sym_strobe.value)
             assert dut.fine_code.value.to_signed() == 0
         await Timer(1, unit="ns")                       # leave the read-only phase
@@ -297,6 +312,27 @@ async def idle_outputs_quiet(dut):
     bits, codes = await start_and_capture(dut)
     check(pdu, 37, bits, codes)
     await quiet(200 * CLKS_PER_BIT)
+
+
+@cocotb.test()
+async def fixed_wait_is_enough(dut):
+    """The controller has no busy pin and waits wait_us(len) after each start. For
+    the shortest and the longest PDU the packet is over by then, and a PDU
+    written and started right after that wait goes out correctly."""
+    await setup(dut)
+    rng = random.Random(8)
+    pdus = [rand_pdu(rng, 0), rand_pdu(rng, 31), rand_pdu(rng, 31), rand_pdu(rng, 0)]
+    await write_pdu(dut, pdus[0])
+    await set_channel(dut, 37)
+    for i, pdu in enumerate(pdus):
+        cap = cocotb.start_soon(capture(dut))
+        await uart_bytes(dut, [0x81])
+        await Timer(wait_us(pdu[1]), unit="us")          # from the end of the start byte
+        assert cap.done(), f"packet {i} (len {pdu[1]}) still on air after {wait_us(pdu[1])} us"
+        check(pdu, 37, *cap.result())
+        if i + 1 < len(pdus):
+            await uart_bytes(dut, [0x00] + list(pdus[i + 1]))   # next PDU, no pause first
+            await pause()
 
 
 def run(sps, gl=False):
