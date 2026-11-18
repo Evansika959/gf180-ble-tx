@@ -230,6 +230,75 @@ async def frame_gap(dut):
     await cap
 
 
+@cocotb.test()
+async def reset_mid_packet(dut):
+    """Reset while a packet is on air: busy, code_valid and fine_code drop at once,
+    the channel goes back to 37, and the PDU buffer (not reset) can be sent again
+    without reloading."""
+    await setup(dut)
+    pdu = demo_pdu()
+    await write_pdu(dut, pdu)
+    await set_channel(dut, 39)
+    await uart_bytes(dut, [0x81])
+    while not int(dut.busy.value):
+        await RisingEdge(dut.clk)
+    await ClockCycles(dut.clk, 100 * sps_of())
+    dut.rst_n.value = 0
+    await RisingEdge(dut.clk)
+    await ReadOnly()
+    assert not int(dut.busy.value) and not int(dut.code_valid.value)
+    assert dut.fine_code.value.to_signed() == 0
+    await ClockCycles(dut.clk, 2)
+    dut.rst_n.value = 1
+    await ClockCycles(dut.clk, 2)
+    bits, codes = await start_and_capture(dut)          # channel is 37 after reset
+    check(pdu, 37, bits, codes)
+
+
+@cocotb.test()
+async def reset_mid_byte(dut):
+    """Reset while a UART byte is half received: the byte is lost, nothing is
+    written or started, and the next frame is taken as a command."""
+    await setup(dut)
+    pdu = demo_pdu()
+    await write_pdu(dut, pdu)
+    stray = cocotb.start_soon(uart_bytes(dut, [0x81]))  # a start command...
+    await Timer(4 * bit_ps(), unit="ps")                # ...cut off mid-byte
+    dut.rst_n.value = 0
+    await ClockCycles(dut.clk, 2)
+    dut.rst_n.value = 1
+    await stray
+    await pause()
+    assert not int(dut.busy.value), "a half-received start byte started a packet"
+    await set_channel(dut, 38)
+    bits, codes = await start_and_capture(dut)
+    check(pdu, 38, bits, codes)
+
+
+@cocotb.test()
+async def idle_outputs_quiet(dut):
+    """With nothing sent, and again after a packet, the outputs hold still: busy,
+    code_valid, sym_strobe low and fine_code 0, with no UART traffic."""
+    await setup(dut)
+
+    async def quiet(cycles):
+        for _ in range(cycles):
+            await RisingEdge(dut.clk)
+            await ReadOnly()
+            assert not int(dut.busy.value) and not int(dut.code_valid.value)
+            assert not int(dut.sym_strobe.value)
+            assert dut.fine_code.value.to_signed() == 0
+        await Timer(1, unit="ns")                       # leave the read-only phase
+    await quiet(200 * CLKS_PER_BIT)
+    pdu = demo_pdu()
+    await write_pdu(dut, pdu)
+    await quiet(10 * CLKS_PER_BIT)                      # loading alone sends nothing
+    await set_channel(dut, 37)
+    bits, codes = await start_and_capture(dut)
+    check(pdu, 37, bits, codes)
+    await quiet(200 * CLKS_PER_BIT)
+
+
 def run(sps, gl=False):
     from cocotb_tools.runner import get_runner
 
