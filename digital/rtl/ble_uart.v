@@ -18,7 +18,14 @@
 //   01cc_cccc             channel = c (latched by ble_tx at start)
 //   1xxx_xxxs             s = 1 pulses start
 //
-// There is no read path: watch the busy pin to know when a packet has gone out.
+// There is no read path and no busy pin: uart_rx is the only connection to the
+// controller. A packet's air time is fixed by its length, (10 + len) x 8 us for
+// a PDU with len payload bytes (376 us at the 37-byte maximum), and the first
+// code comes 3 symbols (3 us) after the start byte is taken, half a UART bit
+// before its stop bit ends. So once the start byte has been sent, wait
+// (10 + len) x 8 + 10 us, or 400 us for any packet, before writing the next PDU
+// or starting again. A start that arrives while a packet is on air is ignored,
+// and a PDU written then can corrupt the packet on air.
 
 `default_nettype none
 
@@ -177,7 +184,6 @@ module ble_tx_uart #(
   input  wire              rst_n,
   input  wire              uart_rx,
 
-  output wire              busy,
   output wire signed [CODE_W-1:0] fine_code,
   output wire              code_valid,
   output wire              air_bit,
@@ -198,7 +204,10 @@ module ble_tx_uart #(
     .clk(clk), .rst_n(rst_n),
     .wr_en(wr_en), .wr_addr(wr_addr), .wr_data(wr_data),
     .channel(channel), .start(start),
-    .busy(busy), .fine_code(fine_code), .code_valid(code_valid),
+    /* verilator lint_off PINCONNECTEMPTY */
+    .busy(),                     // not a pin: the controller times packets
+    /* verilator lint_on PINCONNECTEMPTY */
+    .fine_code(fine_code), .code_valid(code_valid),
     .air_bit(air_bit), .sym_strobe(sym_strobe)
   );
 

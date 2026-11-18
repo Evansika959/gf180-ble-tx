@@ -38,8 +38,12 @@ generated and tested. Codes are 8-bit signed, 2 kHz/LSB, range -125..125
 
 `ble_tx_uart` puts a UART receiver in front of `ble_tx`, so the chip takes its
 packet, channel and start over one input pin, `uart_rx`. Any MCU UART TX pin or
-a USB-serial adapter can drive it. Watch the `busy` output to know when the
-packet has gone out; there is no read path.
+a USB-serial adapter can drive it. It is the only connection to the controller:
+there is no read path and no `busy` pin. A packet's air time is fixed by its
+length, so once the start byte has been sent, wait `(10 + len) x 8 + 10` us
+(`len` = the PDU's length byte), or 400 us for any packet, before loading the
+next PDU or starting again. A start sent while a packet is on air is ignored, and
+a PDU written then can corrupt the packet on air.
 
 `uart_rx` is standard 8N1: idle high, a low start bit, 8 data bits LSB first, a
 high stop bit. A bit lasts `CLKS_PER_BIT` clocks (default 8), so the baud rate
@@ -65,11 +69,12 @@ import serial, time
 s = serial.Serial("/dev/tty.usbserial", 1_000_000)
 s.write(bytes([0x00]) + pdu); time.sleep(0.001)   # PDU from address 0
 s.write(bytes([0x40 | 37]));  time.sleep(0.001)   # channel 37
-s.write(bytes([0x81]))                            # start
+s.write(bytes([0x81])); s.flush()                 # start
+time.sleep(400e-6)                                # on air; then the next packet
 ```
 
-`busy`, `fine_code`, `code_valid`, `air_bit` and `sym_strobe` come straight out
-of `ble_tx`, as described above.
+`fine_code`, `code_valid`, `air_bit` and `sym_strobe` come straight out of
+`ble_tx`, as described above; its `busy` stays inside the block.
 
 ## Running (IIC-OSIC-TOOLS container, from `/foss/designs/gf180-ble-tx/digital`)
 
