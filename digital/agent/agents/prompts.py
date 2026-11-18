@@ -30,6 +30,33 @@ def _join(*parts: str) -> str:
     return "\n\n".join(p.strip() for p in parts if p.strip())
 
 
+# The navigator's design notes for ble_tx: what earlier searches found. A design
+# folder replaces them with its own navigator_notes.txt (see for_design below).
+_BLE_TX_NOTES = """
+Power carries the weight in this search. The baseline n0 is already the answer of two
+earlier power searches, on the current netlist (which adds a small Gaussian-bypass
+debug mux): 247 um wide, fanout 6, density 80, wire length weight 0.12, clock buffers
+capped at clkbuf_2, 40 sinks per leaf buffer, cluster diameter 400, clock wire length
+145, buffer spacing 110; 1.22 mW at signoff. Gains from here will be small, so look
+for what those searches did not try (placement density, slew margin, wire length
+weight, fewer sinks per buffer with shorter wires) as well as refining around n0.
+Die and cell area only have to stay within the limits. Power is measured from a
+simulated advertising packet on each result's own netlist, not guessed from default
+toggle rates, so a small change in it is real. Measured that way on a good earlier
+result (1.18 mW): about 49% is the clock network (clock buffers, clock wires and the
+clock pins of the 39 byte clock gates), about 31% flip-flops clocked every cycle, and
+about 19% logic. An earlier search lowered power 15% (1.39 to 1.18 mW, all of it in
+the clock network) by capping clock buffers at clkbuf_2, putting up to 40 sinks on a
+leaf buffer, a 400 um cluster diameter and wire length 145, buffer spacing 110. So the
+clock tree stage (CTS) is the main lever here: fewer, better-placed, weaker clock
+buffers and shorter clock wires; but its settings were chosen to clear a capacitance violation on the clock
+root buffer at the slow corner, so check any CTS change with an evaluation. Placement
+moves power through the repair buffers and wire length, and a wider die is not
+allowed. Find which CTS and PL directions lower power, evaluate the best candidates,
+and refine around them.
+"""
+
+
 # ===================================================================== navigator
 class NavigatorDecision(BaseModel):
     action: str = Field(description="branch or evaluate (read by the program)")
@@ -81,29 +108,7 @@ anyway. An evaluation that fails on slew or capacitance violations rules out eve
 result with a fanout limit at least as high, a slew margin no higher and a die no
 wider, so do not evaluate again until you have a result that is safer on one of them.
 """,
-    """
-Power carries the weight in this search. The baseline n0 is already the answer of two
-earlier power searches, on the current netlist (which adds a small Gaussian-bypass
-debug mux): 247 um wide, fanout 6, density 80, wire length weight 0.12, clock buffers
-capped at clkbuf_2, 40 sinks per leaf buffer, cluster diameter 400, clock wire length
-145, buffer spacing 110; 1.22 mW at signoff. Gains from here will be small, so look
-for what those searches did not try (placement density, slew margin, wire length
-weight, fewer sinks per buffer with shorter wires) as well as refining around n0.
-Die and cell area only have to stay within the limits. Power is measured from a
-simulated advertising packet on each result's own netlist, not guessed from default
-toggle rates, so a small change in it is real. Measured that way on a good earlier
-result (1.18 mW): about 49% is the clock network (clock buffers, clock wires and the
-clock pins of the 39 byte clock gates), about 31% flip-flops clocked every cycle, and
-about 19% logic. An earlier search lowered power 15% (1.39 to 1.18 mW, all of it in
-the clock network) by capping clock buffers at clkbuf_2, putting up to 40 sinks on a
-leaf buffer, a 400 um cluster diameter and wire length 145, buffer spacing 110. So the
-clock tree stage (CTS) is the main lever here: fewer, better-placed, weaker clock
-buffers and shorter clock wires; but its settings were chosen to clear a capacitance violation on the clock
-root buffer at the slow corner, so check any CTS change with an evaluation. Placement
-moves power through the repair buffers and wire length, and a wider die is not
-allowed. Find which CTS and PL directions lower power, evaluate the best candidates,
-and refine around them.
-""",
+    _BLE_TX_NOTES,
     """
 To branch, set action to branch and take node_id and stage from one entry of
 legal_branches: node_id is the part before the colon and stage the part after it.
@@ -255,3 +260,50 @@ candidate is worth a run only if one is left to spend on it. If you disagree wit
 the rule, say so in the reason.
 """,
 )
+
+
+# ===================================================================== per design
+_ABOUT_BLE_TX = "ble_tx, a small Bluetooth LE modulator"
+
+
+def for_design(design_dir) -> dict:
+    """NAVIGATOR, STAGE_AGENT, DIAGNOSTICIAN and STOP_AGENT for one design folder.
+
+    The text above is written for designs/ble_tx. Another design folder may hold
+      about.txt            one line naming the block, used where the prompts say
+                           "ble_tx, a small Bluetooth LE modulator"
+      navigator_notes.txt  what the navigator should know about this design and
+                           its earlier searches, in place of the ble_tx notes
+    Without them a design gets the ble_tx text unchanged. No curly braces in either.
+    """
+    import re
+    from pathlib import Path
+    d = Path(design_dir)
+    out = {"NAVIGATOR": NAVIGATOR, "STAGE_AGENT": STAGE_AGENT,
+           "DIAGNOSTICIAN": DIAGNOSTICIAN, "STOP_AGENT": STOP_AGENT}
+    about_f, notes_f = d / "about.txt", d / "navigator_notes.txt"
+    if notes_f.is_file():
+        notes = notes_f.read_text().strip()
+        if "{" in notes or "}" in notes:
+            raise ValueError(f"{notes_f}: no curly braces in prompt text")
+        out["NAVIGATOR"] = out["NAVIGATOR"].replace(_BLE_TX_NOTES.strip(), notes)
+        # The ble_tx text names its own search's objective; a design with its own
+        # notes is scored by whatever weights objective shows.
+        for k, a, b in (("NAVIGATOR", "say what to improve: in this search, power.",
+                         "say what to improve."),
+                        ("STAGE_AGENT", "In this search only power is scored, measured from a "
+                         "simulated packet.", "Score terms and their weights are in objective; "
+                         "power is measured from a simulated packet.")):
+            if a not in out[k]:
+                raise ValueError(f"prompts.for_design: the {k} text changed; update this rewrite")
+            out[k] = out[k].replace(a, b)
+    if about_f.is_file():
+        about = " ".join(about_f.read_text().split())
+        if "{" in about or "}" in about:
+            raise ValueError(f"{about_f}: no curly braces in prompt text")
+        name = about.split(",")[0].strip()
+        pat = re.compile(r"ble_tx,\s+a\s+small\s+Bluetooth\s+LE\s+modulator")
+        for k in out:
+            out[k] = pat.sub(about, out[k])
+            out[k] = re.sub(r"\bble_tx\b(?!_)", name, out[k]) if name != "ble_tx" else out[k]
+    return out

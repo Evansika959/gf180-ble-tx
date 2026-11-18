@@ -278,9 +278,8 @@ def electrical_problems(metrics: dict, corners: tuple = CORNERS) -> list[str]:
     violation at signoff), so nothing is compared with it. Signoff is the only place
     the slow corner can be read: after global routing the flow reports about 1284
     slew violations there, against 14 at signoff, so the in-loop estimates are
-    screened on the typical corner alone. Fanout violations are not counted: they are
-    all clock-tree buffers against the config's own limit. A count that is not
-    reported is not checked.
+    screened on the typical corner alone. Fanout violations are not counted here;
+    gate() rejects them at signoff. A count that is not reported is not checked.
     """
     out = []
     for corner in corners:
@@ -304,6 +303,12 @@ def gate(baseline: dict, candidate: dict) -> list[str]:
         return ["no signoff timing reported"]
     reasons += setup_problems(candidate)
     reasons += electrical_problems(candidate)
+    # Fanout: none either, at signoff. The limit is the config's own
+    # MAX_FANOUT_CONSTRAINT, not the library's, and the fix passes do not repair
+    # it, so a result over it is out rather than fixed.
+    fo = candidate.get("design__max_fanout_violation__count")
+    if fo is not None and float(fo) > 0:
+        reasons.append(f"max-fanout violations: {int(float(fo))}")
 
     for key, label in (("magic__drc_error__count", "Magic DRC errors"),
                        ("design__lvs_error__count", "Netgen LVS errors"),

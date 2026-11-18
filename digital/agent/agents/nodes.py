@@ -115,8 +115,14 @@ async def navigator_view(ctx) -> dict:
 
 
 # ------------------------------------------------------------------ 3 · navigator
+def _prompt(name: str) -> str:
+    """The agent's instruction for the configured design (prompts.for_design)."""
+    design = _CFG.get("design")
+    return prompts.for_design(design)[name] if design else getattr(prompts, name)
+
+
 def make_navigator(model) -> LlmAgent:
-    return LlmAgent(model=model, name="navigator", instruction=prompts.NAVIGATOR,
+    return LlmAgent(model=model, name="navigator", instruction=_prompt("NAVIGATOR"),
                     output_schema=prompts.NavigatorDecision)      # fixed answer fields, no tools
 
 
@@ -233,7 +239,7 @@ def submit_action(stage: str, parameters: dict, rationale: str) -> dict:
 
 
 def make_stage_agent(model) -> LlmAgent:
-    return LlmAgent(model=model, name="stage_agent", instruction=prompts.STAGE_AGENT,
+    return LlmAgent(model=model, name="stage_agent", instruction=_prompt("STAGE_AGENT"),
                     tools=[propose_candidates, submit_action])   # tools, no fixed answer fields
 
 
@@ -272,7 +278,7 @@ async def apply(ctx) -> Event:
 
 # ------------------------------------------------------------------ 7 · diagnostician
 def make_diagnostician(model) -> LlmAgent:
-    return LlmAgent(model=model, name="diagnostician", instruction=prompts.DIAGNOSTICIAN,
+    return LlmAgent(model=model, name="diagnostician", instruction=_prompt("DIAGNOSTICIAN"),
                     output_schema=prompts.Diagnosis)
 
 
@@ -295,7 +301,7 @@ async def stop_view(ctx, node_input: Any = None) -> dict:
 
 # ------------------------------------------------------------------ 9 · stop agent
 def make_stop_agent(model) -> LlmAgent:
-    return LlmAgent(model=model, name="stop_agent", instruction=prompts.STOP_AGENT,
+    return LlmAgent(model=model, name="stop_agent", instruction=_prompt("STOP_AGENT"),
                     output_schema=prompts.StopDecision)
 
 
