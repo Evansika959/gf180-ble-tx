@@ -32,25 +32,9 @@ CLOCK_PORT: clk
 CLOCK_PERIOD: 125
 
 # The whole Bluetooth chip has a 1400 x 300 um tapeout slot, and this block should
-# take as little of it as it can. The baseline is 330 um wide: a width sweep of this
-# netlist routed at 300, 330 and 360 um (fanout 9). The search keeps the height and
-# can narrow the width: its floorplan stage sets DIE_WIDTH_UM, which the runner turns
-# into DIE_AREA at this height (pd/stages.py), down to the width where the
-# placement-density floor reaches its cap. The density here was that floor at 330 um
-# with the default margins (starting utilisation 67%, plus 5 points); it is above the
-# floor with the thinner margins below, so the baseline did not need to change.
-#
-# Power-search baseline: the bypass layout (runs/bypass_n18, wl012): the settings of
-# the second power search's answer (runs/pw2 n18) on the RTL with the Gaussian bypass,
-# with PL_WIRE_LENGTH_COEF 0.12 instead of 0.1, because at 0.1 CTS dropped the clock pin
-# of byte 15's clock gate (an OpenROAD fault on that placement). As the flow's own
-# baseline (run to global routing, then the same signoff as every result) this config
-# signs off clean: 58,952 um2 of cells, 1.178 mW measured from a simulated packet
-# (pd/activity.py). runs/pw4 searched from it and found 0.4% more (fanout 7).
-# Earlier: pw1's answer (fanout 6, wire length weight 0.3, CTS 138 / 85 / 320), and
-# before that n14 of the area search runs/cg330a (1.39 mW measured the same way).
-# The area-search baseline was DIE_AREA [0, 0, 330, 300], PL_TARGET_DENSITY_PCT 72,
-# MAX_FANOUT_CONSTRAINT 4 and LibreLane's PL_WIRE_LENGTH_COEF.
+# take as little of it as it can; the height is fixed at 300 um and the search can
+# narrow the width (DIE_WIDTH_UM, pd/stages.py). The settings below started from
+# designs/ble_tx/config.yaml (whose comments give their history on ble_tx alone).
 FP_SIZING: absolute
 DIE_AREA: [0, 0, 270, 300]
 PL_TARGET_DENSITY_PCT: 80

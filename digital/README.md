@@ -26,8 +26,9 @@ Write the PDU bytes (`header0`, `length`, payload) with `wr_en`/`wr_addr`/`wr_da
 set `channel`, pulse `start`. The length byte is latched at `start`; payload
 bytes are read live, so only rewrite ones already sent. `busy` stays high
 until the last code is out. The
-first code arrives 2 symbols + 1 clock after `start`, because each output
-sample needs the symbols up to 1.5 symbols ahead.
+first air bit's code (`code_valid` high) arrives 3 symbols + 1 clock after the
+clock edge that takes `start`; `fine_code` ramps into it from about 2 symbols,
+because each output sample needs the symbols up to 1.5 symbols ahead.
 
 `SPS` is the clock in MHz (samples per 1 us symbol). The default is 8: an
 8 MHz clock gives one code per clock for the 8 MS/s DAC. SPS 2 and 16 are also
@@ -53,7 +54,7 @@ so the sender may be about 3% off. Pulses shorter than half a bit are ignored
 and a byte with a low stop bit is dropped.
 
 A pause marks where a command starts: once the line has been idle for
-`GAP_BITS` bit times (default 20, 20 us at 1 Mbaud), the next byte is a command.
+`GAP_BITS` bit times (default 20, 20 us at 1 Mbaud; counted to within one bit), the next byte is a command.
 Send each command as one burst, then pause.
 
 | Command | Data | Action |

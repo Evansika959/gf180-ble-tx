@@ -10,7 +10,8 @@
 // baud rate may be off by about 3%.
 //
 // UART has no chip select, so a quiet line marks frames: once uart_rx has been
-// idle for GAP_BITS bit times (20 = 2 byte times by default), the next byte is
+// idle for GAP_BITS bit times (20 = 2 byte times by default; counted in whole
+// bit times, so 19 to 20 of them), the next byte is
 // a command. Send each command as one burst, then pause. Commands:
 //
 //   00aa_aaaa  d0 d1 ...  write PDU bytes from address a (0 = header0,

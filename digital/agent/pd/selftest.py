@@ -728,7 +728,7 @@ def activity_power() -> None:
             env = dict(os.environ, PATH=f"{A.IVERILOG_DIR}:{os.environ.get('PATH', '')}")
             vcd = Path(tmp) / "a.vcd"
             r = subprocess.run(["iverilog", "-g2012", f'-DVCD_OUT="{vcd}"', f'-DSTIM_DIR="{ble}"',
-                                "-DHAS_PORT_gauss_bypass", "-o", f"{tmp}/a.vvp", str(ble / A.TB_NAME),
+                                "-o", f"{tmp}/a.vvp", str(ble / A.TB_NAME),
                                 str(rtl / "ble_tx.v"), str(rtl / "ble_gauss_lut.v")],
                                capture_output=True, text=True, env=env)
             if not r.returncode:

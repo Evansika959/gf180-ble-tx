@@ -22,9 +22,6 @@ module power_tb;
   ble_tx dut (
     .clk(clk), .rst_n(rst_n), .wr_en(wr_en), .wr_addr(wr_addr), .wr_data(wr_data),
     .channel(channel), .start(start),
-`ifdef HAS_PORT_gauss_bypass
-    .gauss_bypass(1'b0),     // normal Gaussian shaping
-`endif
     .busy(busy), .fine_code(fine_code), .code_valid(code_valid),
     .air_bit(air_bit), .sym_strobe(sym_strobe));
 

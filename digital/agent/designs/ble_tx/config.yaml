@@ -26,6 +26,9 @@ CLOCK_PERIOD: 125
 # with the default margins (starting utilisation 67%, plus 5 points); it is above the
 # floor with the thinner margins below, so the baseline did not need to change.
 #
+# The figures below were measured on the RTL with the Gaussian-bypass debug input,
+# since removed (cf47dee; 46,132 -> 45,537 um2 at synthesis), so the baseline should
+# be run again before it is compared with a new search.
 # Power-search baseline: the bypass layout (runs/bypass_n18, wl012): the settings of
 # the second power search's answer (runs/pw2 n18) on the RTL with the Gaussian bypass,
 # with PL_WIRE_LENGTH_COEF 0.12 instead of 0.1, because at 0.1 CTS dropped the clock pin
