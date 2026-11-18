@@ -16,6 +16,9 @@ jobs:
       - name: RTL corner cases
         run: python test_ble_tx_edge.py
         working-directory: digital/test
+      - name: UART front end against the golden model
+        run: python test_ble_tx_uart.py
+        working-directory: digital/test
       - name: Full chain with behavioral DAC, PLL and amplifier
         run: python test_tx_chain.py
         working-directory: behavioral
@@ -24,4 +27,5 @@ jobs:
           python scripts/check_cocotb_results.py
           digital/test/results_sps2.xml digital/test/results_sps8.xml digital/test/results_sps16.xml
           digital/test/results_edge_sps2.xml digital/test/results_edge_sps8.xml digital/test/results_edge_sps16.xml
+          digital/test/results_uart_sps2.xml digital/test/results_uart_sps8.xml digital/test/results_uart_sps16.xml
           behavioral/results_sps2.xml behavioral/results_sps8.xml behavioral/results_sps16.xml

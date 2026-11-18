@@ -1,8 +1,10 @@
 # Pre-layout static timing analysis of the Yosys netlist with OpenSTA.
 # Run from this folder in the IIC-OSIC-TOOLS container, after synthesis:
 #   cd ../synth && SPS=8 yosys -c synth.tcl && cd ../sta && SPS=8 sta -exit sta.tcl
+# Add TOP=ble_tx_uart to both for the block with its UART front end.
 # No parasitics: wires are ideal, so treat small slacks with suspicion.
 # Written for OpenSTA 3.x (IIC-OSIC-TOOLS), which reports per corner with -scenes.
+set top [expr {[info exists ::env(TOP)] ? $::env(TOP) : "ble_tx"}]
 set sps [expr {[info exists ::env(SPS)] ? $::env(SPS) : 8}]
 if {![info exists ::env(CLOCK_PERIOD)]} { set ::env(CLOCK_PERIOD) [expr {1000.0 / $sps}] }
 set lib_dir $::env(PDK_ROOT)/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/lib
@@ -12,14 +14,14 @@ define_corners {*}$corners
 foreach c $corners {
   read_liberty -corner $c $lib_dir/gf180mcu_fd_sc_mcu7t5v0__$c.lib
 }
-read_verilog ../synth/ble_tx_sps${sps}.syn.v
-link_design ble_tx
+read_verilog ../synth/${top}_sps${sps}.syn.v
+link_design $top
 read_sdc ble_tx.sdc
 
 file mkdir reports
-set rpt reports/sta_sps${sps}.rpt
+set rpt reports/[expr {$top eq "ble_tx" ? "" : "${top}_"}]sta_sps${sps}.rpt
 set fh [open $rpt w]
-puts $fh "ble_tx pre-layout STA, SPS=$sps, clock period $::env(CLOCK_PERIOD) ns"
+puts $fh "$top pre-layout STA, SPS=$sps, clock period $::env(CLOCK_PERIOD) ns"
 close $fh
 
 foreach c $corners {
