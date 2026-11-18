@@ -1,0 +1,36 @@
+[*]
+[*] GTKWave save file: BLE modulator DAC code (fine_code), SPS=8 RTL sim
+[*] Flags: @22=hex, @28=binary(1-bit), @424=signed decimal, @10424=signed decimal+analog interpolated, @20000=analog height extension
+[*]
+[dumpfile] "/foss/designs/gf180-ble-tx-v2/digital/test/sim_build_sps8/ble_tx.fst"
+[timestart] 0
+[size] 1600 900
+[pos] -1 -1
+*-17.400000 0 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] ble_tx.
+[sst_width] 220
+[signals_width] 200
+[sst_expanded] 1
+[sst_vpaned_height] 250
+@28
+ble_tx.clk
+ble_tx.start
+ble_tx.busy
+ble_tx.code_valid
+ble_tx.sym_strobe
+ble_tx.air_bit
+@424
+ble_tx.fine_code[7:0]
+@10424
+ble_tx.fine_code[7:0]
+@20000
+-
+-
+-
+-
+-
+-
+-
+-
+[pattern_trace] 1
+[pattern_trace] 0
