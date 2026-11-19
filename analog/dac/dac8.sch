@@ -91,8 +91,7 @@ C {code_shown.sym} 1180 -660 0 0 {name=s1 only_toplevel=false value="
 .control
 tran 0.5n 512u
 
-plot v(vout) xlimit 127.9u 128.2u
-
+plot v(vout) 
 .endc
 "}
 C {lab_wire.sym} -270 70 0 0 {name=p1 sig_type=std_logic lab=B0}

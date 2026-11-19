@@ -46,8 +46,7 @@ V16 net9 0 3.3
 .control
 tran 0.5n 512u
 
-plot v(vout) xlimit 127.9u 128.2u
-
+plot v(vout)
 .endc
 
 
