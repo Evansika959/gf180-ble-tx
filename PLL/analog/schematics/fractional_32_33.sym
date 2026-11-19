@@ -1,0 +1,51 @@
+v {xschem version=3.4.4 file_version=1.2}
+K {type=subcircuit
+format="@name @pinlist fractional_32_33"
+template="name=x1"
+spice_sym_def=".include \"fractional_32_33.spice\""}
+G {}
+V {}
+S {}
+E {}
+L 4 -140 0 140 0 {}
+L 4 -140 320 140 320 {}
+L 4 -140 0 -140 320 {}
+L 4 140 0 140 320 {}
+T {GF180 MASH-SR} -130 -30 0 0 0.3 0.3 {}
+T {@name} -130 330 0 0 0.3 0.3 {}
+L 4 -180 40 -140 40 {}
+T {clk_presc} -130 32 0 0 0.22 0.22 {}
+L 4 -180 80 -140 80 {}
+T {rst} -130 72 0 0 0.22 0.22 {}
+L 4 -180 120 -140 120 {}
+T {load} -130 112 0 0 0.22 0.22 {}
+L 4 -180 160 -140 160 {}
+T {n_int[11:0]} -130 152 0 0 0.22 0.22 {}
+L 4 -180 200 -140 200 {}
+T {frac[19:0]} -130 192 0 0 0.22 0.22 {}
+L 4 -180 240 -140 240 {}
+T {VDD} -130 232 0 0 0.22 0.22 {}
+L 4 -180 280 -140 280 {}
+T {VSS} -130 272 0 0 0.22 0.22 {}
+L 4 180 40 140 40 {}
+T {mc} 130 32 0 1 0.22 0.22 {}
+L 4 180 80 140 80 {}
+T {feedback_tick} 130 72 0 1 0.22 0.22 {}
+L 4 180 120 140 120 {}
+T {division_active[11:0]} 130 112 0 1 0.22 0.22 {}
+L 4 180 160 140 160 {}
+T {running} 130 152 0 1 0.22 0.22 {}
+L 4 180 200 140 200 {}
+T {fault} 130 192 0 1 0.22 0.22 {}
+B 5 -182.5 37.5 -177.5 42.5 {name=clk_presc dir=in sim_pinnumber=0}
+B 5 -182.5 77.5 -177.5 82.5 {name=rst dir=in sim_pinnumber=1}
+B 5 -182.5 117.5 -177.5 122.5 {name=load dir=in sim_pinnumber=2}
+B 5 -182.5 157.5 -177.5 162.5 {name=n_int[11:0] dir=in sim_pinnumber=3}
+B 5 -182.5 197.5 -177.5 202.5 {name=frac[19:0] dir=in sim_pinnumber=4}
+B 5 177.5 37.5 182.5 42.5 {name=mc dir=out sim_pinnumber=5}
+B 5 177.5 77.5 182.5 82.5 {name=feedback_tick dir=out sim_pinnumber=6}
+B 5 177.5 117.5 182.5 122.5 {name=division_active[11:0] dir=out sim_pinnumber=7}
+B 5 177.5 157.5 182.5 162.5 {name=running dir=out sim_pinnumber=8}
+B 5 177.5 197.5 182.5 202.5 {name=fault dir=out sim_pinnumber=9}
+B 5 -182.5 237.5 -177.5 242.5 {name=VDD dir=inout sim_pinnumber=10}
+B 5 -182.5 277.5 -177.5 282.5 {name=VSS dir=inout sim_pinnumber=11}

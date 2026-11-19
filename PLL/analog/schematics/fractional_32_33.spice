@@ -1,0 +1,938 @@
+* GF180 mapped controller. Power/well rails are explicit.
+.include "standard_cells.spice"
+.subckt fractional_32_33 clk_presc rst load n_int[11] n_int[10] n_int[9] n_int[8] n_int[7]
++ n_int[6] n_int[5] n_int[4] n_int[3] n_int[2] n_int[1] n_int[0] frac[19]
++ frac[18] frac[17] frac[16] frac[15] frac[14] frac[13] frac[12] frac[11]
++ frac[10] frac[9] frac[8] frac[7] frac[6] frac[5] frac[4] frac[3]
++ frac[2] frac[1] frac[0] mc feedback_tick division_active[11] division_active[10] division_active[9]
++ division_active[8] division_active[7] division_active[6] division_active[5] division_active[4] division_active[3] division_active[2] division_active[1]
++ division_active[0] running fault VDD VSS
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3308
+Xg_0 n_53 n_54 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3309
+Xg_1 n_55 n_56 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3310
+Xg_2 n_57 n_58 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3311
+Xg_3 n_59 n_60 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3312
+Xg_4 n_61 n_62 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3313
+Xg_5 n_63 n_64 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3314
+Xg_6 n_65 n_66 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3315
+Xg_7 n_67 n_68 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3316
+Xg_8 n_int[1] n_69 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3317
+Xg_9 n_70 n_71 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3318
+Xg_10 n_int[2] n_72 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3319
+Xg_11 load n_73 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3320
+Xg_12 n_74 n_75 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3321
+Xg_13 rst n_76 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3322
+Xg_14 n_77 running division_active[6] VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3323
+Xg_15 running n_78 division_active[5] VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3324
+Xg_16 n_79 running division_active[4] VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3325
+Xg_17 n_80 running division_active[3] VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3326
+Xg_18 n_81 running division_active[2] VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3327
+Xg_19 n_82 running division_active[1] VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3328
+Xg_20 n_83 running division_active[0] VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3329
+Xg_21 n_84 n_85 n_86 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__or2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3330
+Xg_22 n_84 n_85 n_87 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3331
+Xg_23 n_65 n_88 n_89 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3332
+Xg_24 n_59 n_62 n_63 n_90 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3333
+Xg_25 n_59 n_61 n_91 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3334
+Xg_26 n_59 n_61 n_63 n_92 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3335
+Xg_27 n_93 n_94 n_92 n_95 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3336
+Xg_28 n_90 n_95 n_89 n_96 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3337
+Xg_29 n_65 n_88 n_93 n_97 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__or3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3338
+Xg_30 n_63 n_91 n_98 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3339
+Xg_31 n_63 n_91 n_97 n_99 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3340
+Xg_32 n_93 n_94 n_88 n_100 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3341
+Xg_33 n_59 n_61 n_101 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3342
+Xg_34 n_59 n_61 n_102 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__or2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3343
+Xg_35 n_64 n_65 n_102 n_103 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3344
+Xg_36 n_100 n_103 n_99 n_104 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3345
+Xg_37 n_96 n_104 n_87 n_105 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3346
+Xg_38 n_93 n_94 n_88 n_106 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3347
+Xg_39 n_87 n_106 n_107 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__or2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3348
+Xg_40 n_64 n_66 n_101 n_107 n_108 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand4_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3349
+Xg_41 n_93 n_94 n_65 n_88 n_109 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi211_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3350
+Xg_42 n_59 n_61 n_64 n_109 n_110 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and4_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3351
+Xg_43 n_93 n_94 n_65 n_88 n_111 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai211_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3352
+Xg_44 n_60 n_61 n_64 n_111 n_112 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and4_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3353
+Xg_45 n_65 n_88 n_93 n_113 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3354
+Xg_46 n_64 n_102 n_113 n_92 n_97 n_114 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai32_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3355
+Xg_47 n_110 n_112 n_114 n_87 n_115 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai31_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3356
+Xg_48 n_108 n_115 n_116 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3357
+Xg_49 n_105 n_116 n_117 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__or2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3358
+Xg_50 n_118 n_117 n_119 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3359
+Xg_51 n_63 n_93 n_94 n_101 n_120 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and4_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3360
+Xg_52 n_98 n_120 n_65 n_88 n_121 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai211_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3361
+Xg_53 n_63 n_102 n_111 n_122 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3362
+Xg_54 n_92 n_106 n_123 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3363
+Xg_55 n_90 n_113 n_123 n_65 n_122 n_124 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi221_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3364
+Xg_56 n_121 n_124 n_87 n_125 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3365
+Xg_57 n_117 n_125 n_126 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3366
+Xg_58 n_105 n_116 n_125 n_86 n_127 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai31_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3367
+Xg_59 n_86 n_105 n_116 n_125 n_128 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor4_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3368
+Xg_60 n_71 n_128 n_127 n_129 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3369
+Xg_61 n_118 n_117 n_130 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3370
+Xg_62 n_118 n_117 n_131 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3371
+Xg_63 n_129 n_130 n_119 n_132 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3372
+Xg_64 n_60 n_132 n_133 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3373
+Xg_65 n_60 n_132 n_134 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3374
+Xg_66 n_59 n_132 n_135 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3375
+Xg_67 n_56 n_135 n_136 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__or2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3376
+Xg_68 n_56 n_135 n_133 n_137 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3377
+Xg_69 n_138 n_135 n_139 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xnor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3378
+Xg_70 n_137 n_139 n_140 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3379
+Xg_71 n_129 n_131 n_141 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3380
+Xg_72 n_62 n_141 n_142 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3381
+Xg_73 n_61 n_129 n_131 n_143 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3382
+Xg_74 n_75 n_143 n_144 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__or2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3383
+Xg_75 n_142 n_144 n_145 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3384
+Xg_76 n_56 n_135 n_146 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3385
+Xg_77 n_56 n_60 n_132 n_147 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3386
+Xg_78 n_142 n_144 n_147 n_148 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3387
+Xg_79 n_136 n_145 n_146 n_149 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3388
+Xg_80 n_64 n_150 n_151 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3389
+Xg_81 n_74 n_143 n_152 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3390
+Xg_82 n_63 n_150 n_153 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3391
+Xg_83 n_153 n_154 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3392
+Xg_84 n_71 n_86 n_126 n_155 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3393
+Xg_85 n_155 n_156 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3394
+Xg_86 n_153 n_155 n_157 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3395
+Xg_87 n_75 n_143 n_151 n_158 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3396
+Xg_88 n_154 n_156 n_158 n_152 n_151 n_159 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai32_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3397
+Xg_89 n_142 n_144 n_147 n_160 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3398
+Xg_90 n_149 n_159 n_160 n_161 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3399
+Xg_91 n_159 n_160 n_148 n_162 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3400
+Xg_92 n_137 n_139 n_163 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xnor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3401
+Xg_93 n_162 n_163 n_140 n_164 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3402
+Xg_94 n_138 n_134 n_133 n_165 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3403
+Xg_95 n_166 n_164 n_165 n_167 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3404
+Xg_96 load rst n_168 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3405
+Xg_97 n_73 n_76 n_169 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3406
+Xg_98 n_53 n_170 n_171 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3407
+Xg_99 n_172 n_67 n_173 n_174 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3408
+Xg_100 n_174 n_175 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3409
+Xg_101 n_176 n_171 n_174 n_177 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3410
+Xg_102 n_176 n_171 n_174 n_178 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3411
+Xg_103 n_169 n_177 n_179 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3412
+Xg_104 n_168 n_178 n_180 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3413
+Xg_105 n_167 n_179 n_181 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3414
+Xg_106 n_58 n_182 n_183 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3415
+Xg_107 n_57 n_182 n_184 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3416
+Xg_108 n_185 n_184 n_186 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3417
+Xg_109 n_185 n_184 n_187 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3418
+Xg_110 n_188 n_187 n_189 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3419
+Xg_111 n_188 n_187 n_190 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3420
+Xg_112 n_191 n_190 n_192 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3421
+Xg_113 n_186 n_189 n_193 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3422
+Xg_114 n_194 n_183 n_195 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3423
+Xg_115 n_193 n_195 n_196 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3424
+Xg_116 n_193 n_195 n_197 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3425
+Xg_117 n_191 n_190 n_197 n_198 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3426
+Xg_118 n_192 n_197 n_199 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xnor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3427
+Xg_119 frac[17] n_199 n_200 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3428
+Xg_120 n_191 n_190 n_201 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3429
+Xg_121 frac[16] n_201 n_202 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3430
+Xg_122 frac[17] n_199 n_203 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xnor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3431
+Xg_123 n_202 n_203 n_204 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__or2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3432
+Xg_124 n_200 n_204 n_205 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3433
+Xg_125 n_194 n_183 n_196 n_198 n_206 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai211_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3434
+Xg_126 n_194 n_183 n_198 n_206 n_207 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai31_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3435
+Xg_127 frac[18] n_207 n_208 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3436
+Xg_128 frac[18] n_207 n_209 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xnor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3437
+Xg_129 n_205 n_209 n_210 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__or2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3438
+Xg_130 n_168 n_177 n_211 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3439
+Xg_131 n_211 n_212 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3440
+Xg_132 n_208 n_210 n_213 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3441
+Xg_133 frac[19] n_206 n_211 n_213 n_214 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__or4_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3442
+Xg_134 n_181 n_214 n_215 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3443
+Xg_135 frac[19] n_206 n_212 n_213 n_216 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand4_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3444
+Xg_136 n_181 n_214 n_216 n_217 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3445
+Xg_137 n_162 n_163 n_218 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xnor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3446
+Xg_138 frac[19] n_206 n_213 n_219 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3447
+Xg_139 n_180 n_218 n_219 n_211 n_220 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai22_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3448
+Xg_140 n_205 n_209 n_221 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3449
+Xg_141 n_210 n_221 n_222 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3450
+Xg_142 n_149 n_160 n_159 n_223 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3451
+Xg_143 n_161 n_179 n_224 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3452
+Xg_144 n_211 n_222 n_223 n_224 n_225 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai22_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3453
+Xg_145 n_202 n_203 n_226 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3454
+Xg_146 n_177 n_204 n_226 n_227 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3455
+Xg_147 n_157 n_158 n_228 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3456
+Xg_148 n_178 n_228 n_229 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3457
+Xg_149 n_227 n_229 n_169 n_230 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3458
+Xg_150 frac[16] n_201 n_231 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3459
+Xg_151 n_202 n_212 n_232 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3460
+Xg_152 n_154 n_156 n_233 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3461
+Xg_153 n_157 n_179 n_233 n_234 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3462
+Xg_154 n_231 n_232 n_234 n_235 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3463
+Xg_155 n_236 n_168 n_237 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3464
+Xg_156 n_238 n_168 n_239 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3465
+Xg_157 n_240 n_168 n_241 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3466
+Xg_158 n_242 n_168 n_243 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3467
+Xg_159 n_244 n_168 n_245 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3468
+Xg_160 n_246 n_168 n_247 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3469
+Xg_161 n_248 n_168 n_249 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3470
+Xg_162 n_250 n_168 n_251 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3471
+Xg_163 n_252 n_168 n_253 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3472
+Xg_164 n_126 n_169 n_254 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3473
+Xg_165 n_87 n_168 n_255 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3474
+Xg_166 n_256 n_168 n_257 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3475
+Xg_167 n_258 n_168 n_259 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3476
+Xg_168 n_260 n_168 n_261 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3477
+Xg_169 n_262 n_168 n_263 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3478
+Xg_170 n_264 n_168 n_265 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3479
+Xg_171 n_266 n_168 n_267 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3480
+Xg_172 n_268 n_168 n_269 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3481
+Xg_173 n_270 n_168 n_271 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3482
+Xg_174 n_272 n_168 n_273 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3483
+Xg_175 n_62 n_169 n_274 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3484
+Xg_176 n_64 n_169 n_275 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3485
+Xg_177 n_276 n_168 n_277 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3486
+Xg_178 n_278 n_168 n_279 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3487
+Xg_179 n_280 n_168 n_281 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3488
+Xg_180 n_282 n_168 n_283 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3489
+Xg_181 n_284 n_168 n_285 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3490
+Xg_182 n_286 n_168 n_287 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3491
+Xg_183 n_288 n_168 n_289 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3492
+Xg_184 n_290 n_168 n_291 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3493
+Xg_185 n_292 n_168 n_293 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3494
+Xg_186 n_294 n_168 n_295 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3495
+Xg_187 n_296 n_168 n_297 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3496
+Xg_188 n_298 n_169 n_299 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__or2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3497
+Xg_189 n_300 n_168 n_301 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3498
+Xg_190 n_302 n_169 n_303 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__or2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3499
+Xg_191 n_304 n_168 n_305 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3500
+Xg_192 n_306 n_168 n_307 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3501
+Xg_193 n_308 n_168 n_309 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3502
+Xg_194 n_310 n_168 n_311 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3503
+Xg_195 n_312 n_168 n_313 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3504
+Xg_196 n_314 n_168 n_315 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3505
+Xg_197 n_316 n_169 n_317 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__or2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3506
+Xg_198 n_66 n_94 n_318 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3507
+Xg_199 n_168 n_318 n_319 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3508
+Xg_200 n_88 n_320 n_168 n_321 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3509
+Xg_201 n_88 n_320 n_321 n_322 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3510
+Xg_202 n_93 n_294 n_168 n_323 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3511
+Xg_203 n_93 n_294 n_323 n_324 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3512
+Xg_204 n_94 n_296 n_168 n_325 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3513
+Xg_205 n_94 n_296 n_325 n_326 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3514
+Xg_206 n_53 n_170 n_327 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3515
+Xg_207 n_176 n_327 n_328 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3516
+Xg_208 n_172 n_176 n_327 n_329 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3517
+Xg_209 n_68 n_329 n_330 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3518
+Xg_210 n_67 n_329 n_331 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3519
+Xg_211 n_169 n_331 n_332 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3520
+Xg_212 n_172 n_328 n_333 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3521
+Xg_213 n_169 n_333 n_334 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3522
+Xg_214 n_176 n_327 n_335 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xnor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3523
+Xg_215 n_173 n_330 n_336 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xnor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3524
+Xg_216 n_336 n_337 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3525
+Xg_217 n_54 n_170 n_338 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3526
+Xg_218 n_54 n_170 n_339 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3527
+Xg_219 n_338 n_339 n_340 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3528
+Xg_220 n_77 n_340 n_341 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3529
+Xg_221 n_53 n_78 n_342 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3530
+Xg_222 running n_341 n_342 n_343 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3531
+Xg_223 n_335 n_343 n_344 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3532
+Xg_224 n_331 n_333 n_337 n_344 n_345 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand4_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3533
+Xg_225 n_168 n_345 n_346 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3534
+Xg_226 n_335 n_346 n_347 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3535
+Xg_227 n_340 n_346 n_348 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3536
+Xg_228 n_53 n_346 n_349 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3537
+Xg_229 frac[18] frac[19] frac[12] frac[13] n_350 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor4_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3538
+Xg_230 frac[16] frac[17] frac[14] frac[15] n_351 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor4_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3539
+Xg_231 n_350 n_351 n_352 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3540
+Xg_232 n_138 n_352 n_353 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3541
+Xg_233 n_int[4] n_138 n_352 n_354 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3542
+Xg_234 n_55 n_352 n_355 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3543
+Xg_235 n_55 n_int[3] n_352 n_356 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3544
+Xg_236 n_int[3] n_355 n_357 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3545
+Xg_237 n_74 n_352 n_358 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3546
+Xg_238 n_72 n_358 n_359 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3547
+Xg_239 n_150 n_352 n_360 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3548
+Xg_240 n_84 n_352 n_361 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3549
+Xg_241 n_int[0] n_84 n_352 n_362 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3550
+Xg_242 n_69 n_360 n_363 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3551
+Xg_243 n_int[0] n_84 n_352 n_363 n_364 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand4_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3552
+Xg_244 n_69 n_360 n_364 n_365 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3553
+Xg_245 n_72 n_358 n_366 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3554
+Xg_246 n_365 n_366 n_359 n_367 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3555
+Xg_247 n_357 n_367 n_356 n_368 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3556
+Xg_248 n_int[4] n_353 n_369 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xnor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3557
+Xg_249 n_368 n_369 n_370 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3558
+Xg_250 n_354 n_370 n_371 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3559
+Xg_251 n_166 n_352 n_372 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3560
+Xg_252 n_166 n_352 n_354 n_370 n_373 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and4_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3561
+Xg_253 n_371 n_372 n_374 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__or2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3562
+Xg_254 n_371 n_372 n_375 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3563
+Xg_255 n_374 n_375 load n_376 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3564
+Xg_256 n_int[5] n_376 n_76 n_377 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3565
+Xg_257 n_int[5] n_376 n_377 n_378 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3566
+Xg_258 n_368 n_369 n_379 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3567
+Xg_259 n_int[4] n_73 n_380 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3568
+Xg_260 load n_379 n_76 n_381 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3569
+Xg_261 n_380 n_381 n_382 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3570
+Xg_262 n_357 n_367 n_383 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xnor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3571
+Xg_263 n_int[3] n_73 n_76 n_384 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3572
+Xg_264 n_73 n_383 n_384 n_385 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3573
+Xg_265 n_72 n_358 n_365 n_386 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3574
+Xg_266 load n_386 n_387 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3575
+Xg_267 n_72 load rst n_387 n_388 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi211_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3576
+Xg_268 n_362 n_363 n_389 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xnor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3577
+Xg_269 load n_389 n_390 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3578
+Xg_270 n_69 load rst n_390 n_391 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi211_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3579
+Xg_271 n_int[0] n_361 n_392 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3580
+Xg_272 n_int[0] n_73 n_76 n_393 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3581
+Xg_273 n_73 n_392 n_393 n_394 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3582
+Xg_274 running n_169 n_395 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3583
+Xg_275 n_395 n_396 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3584
+Xg_276 running n_352 n_397 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3585
+Xg_277 n_168 n_397 n_398 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3586
+Xg_278 n_172 n_171 n_399 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3587
+Xg_279 n_67 n_176 n_173 n_399 n_400 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor4_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3588
+Xg_280 n_176 n_174 n_400 n_401 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3589
+Xg_281 n_397 n_401 n_168 n_402 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3590
+Xg_282 n_211 n_402 n_403 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3591
+Xg_283 n_180 n_398 n_404 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3592
+Xg_284 n_211 n_397 n_405 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3593
+Xg_285 n_191 n_404 n_405 n_194 n_406 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi22_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3594
+Xg_286 n_406 n_407 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3595
+Xg_287 n_194 n_404 n_405 n_182 n_408 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi22_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3596
+Xg_288 n_408 n_409 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3597
+Xg_289 n_57 n_404 n_405 n_185 n_410 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi22_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3598
+Xg_290 n_410 n_411 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3599
+Xg_291 n_176 n_175 n_397 n_412 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3600
+Xg_292 n_180 n_398 n_412 n_413 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3601
+Xg_293 n_182 n_413 n_414 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3602
+Xg_294 n_188 n_415 n_416 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3603
+Xg_295 n_188 n_415 n_417 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__or2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3604
+Xg_296 frac[16] n_171 n_327 frac[19] n_418 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi22_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3605
+Xg_297 frac[17] n_338 n_339 frac[18] n_419 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi22_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3606
+Xg_298 n_176 n_418 n_419 n_420 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3607
+Xg_299 frac[15] n_327 n_338 frac[13] n_421 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi22_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3608
+Xg_300 frac[12] n_171 n_339 frac[14] n_176 n_422 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi221_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3609
+Xg_301 n_421 n_422 n_420 n_423 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3610
+Xg_302 n_188 n_415 n_423 n_424 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xnor3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3611
+Xg_303 n_185 n_425 n_426 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3612
+Xg_304 n_185 n_425 n_427 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3613
+Xg_305 n_185 n_425 n_424 n_428 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xor3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3614
+Xg_306 n_182 n_429 n_430 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__xnor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3615
+Xg_307 n_428 n_430 n_431 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3616
+Xg_308 n_182 n_429 n_431 n_432 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3617
+Xg_309 n_168 n_412 n_433 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3618
+Xg_310 n_432 n_433 n_414 n_434 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3619
+Xg_311 n_185 n_413 n_435 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3620
+Xg_312 n_424 n_427 n_426 n_436 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3621
+Xg_313 n_436 n_437 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3622
+Xg_314 n_433 n_437 n_435 n_438 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3623
+Xg_315 n_169 n_412 n_439 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__or2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3624
+Xg_316 n_188 n_413 n_440 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3625
+Xg_317 n_417 n_423 n_416 n_441 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3626
+Xg_318 n_433 n_441 n_440 n_442 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3627
+Xg_319 n_int[1] n_int[2] n_int[0] n_443 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3628
+Xg_320 n_int[3] n_int[1] n_int[2] n_int[0] n_444 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor4_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3629
+Xg_321 n_int[5] n_int[4] n_445 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3630
+Xg_322 n_444 n_445 n_446 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3631
+Xg_323 n_int[4] n_int[3] n_447 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3632
+Xg_324 n_443 n_447 n_448 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3633
+Xg_325 n_int[5] n_448 n_int[6] n_449 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3634
+Xg_326 n_int[10] n_int[7] n_450 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3635
+Xg_327 n_int[8] n_int[11] n_int[9] n_450 n_451 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor4_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3636
+Xg_328 n_int[6] n_446 n_449 n_451 n_452 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai211_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3637
+Xg_329 running n_168 n_453 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3638
+Xg_330 load n_452 n_395 rst n_454 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi211_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3639
+Xg_331 load n_76 n_452 n_455 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3640
+Xg_332 fault n_168 n_456 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3641
+Xg_333 n_455 n_456 n_457 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3642
+Xg_334 n_169 n_424 n_458 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3643
+Xg_335 n_169 n_428 n_459 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3644
+Xg_336 n_428 n_430 n_460 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3645
+Xg_337 n_169 n_431 n_460 n_461 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3646
+Xg_338 n_117 n_168 n_462 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3647
+Xg_339 n_60 n_169 n_463 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3648
+Xg_340 n_320 n_168 n_464 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3649
+Xg_341 n_336 n_346 n_465 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3650
+Xg_342 n_int[5] n_373 n_466 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3651
+Xg_343 n_int[5] n_375 n_466 load n_467 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi211_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3652
+Xg_344 n_int[6] n_467 n_76 n_468 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3653
+Xg_345 n_int[6] n_467 n_468 n_469 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3654
+Xg_346 n_345 n_453 n_470 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3655
+Xg_347 mc n_395 n_471 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3656
+Xg_348 n_383 n_392 n_472 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3657
+Xg_349 n_379 n_386 n_389 n_472 n_473 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nor4_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3658
+Xg_350 n_170 n_82 n_83 n_53 n_474 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai211_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3659
+Xg_351 n_474 n_475 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3660
+Xg_352 n_81 n_335 n_340 n_82 n_475 n_476 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi221_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3661
+Xg_353 n_80 n_333 n_335 n_81 n_477 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai22_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3662
+Xg_354 n_79 n_331 n_333 n_80 n_478 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__aoi22_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3663
+Xg_355 n_476 n_477 n_478 n_479 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3664
+Xg_356 n_79 n_331 n_336 n_479 n_480 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai211_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3665
+Xg_357 n_345 n_473 n_480 n_73 n_481 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__oai211_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3666
+Xg_358 n_380 n_444 n_482 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3667
+Xg_359 n_454 n_481 n_482 n_483 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand3_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3668
+Xg_360 n_471 n_483 n_484 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__nand2_1
+* mapped instance: $abc$3307$auto$blifparse.cc:397:parse_blif$3669
+Xg_361 n_211 n_402 n_485 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+* mapped instance: $auto$clockgate.cc:372:execute$3277
+Xg_362 clk_presc n_346 n_487 n_486 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__icgtp_1
+* mapped instance: $auto$clockgate.cc:372:execute$3279
+Xg_363 clk_presc n_396 n_489 n_488 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__icgtp_1
+* mapped instance: $auto$clockgate.cc:372:execute$3281
+Xg_364 clk_presc n_403 n_491 n_490 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__icgtp_1
+* mapped instance: $auto$clockgate.cc:372:execute$3283
+Xg_365 clk_presc n_485 n_493 n_492 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__icgtp_1
+* mapped instance: $auto$clockgate.cc:372:execute$3285
+Xg_366 clk_presc n_439 n_495 n_494 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__icgtp_1
+* mapped instance: $auto$clockgate.cc:372:execute$3287
+Xg_367 clk_presc n_402 n_497 n_496 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__icgtp_1
+* mapped instance: $auto$ff.cc:337:slice$1000
+Xg_368 n_279 n_492 n_284 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1001
+Xg_369 n_277 n_492 n_282 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1002
+Xg_370 n_275 n_492 n_280 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1003
+Xg_371 n_274 n_492 n_278 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1004
+Xg_372 n_463 n_492 n_276 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1005
+Xg_373 n_273 n_492 n_63 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1006
+Xg_374 n_271 n_492 n_61 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1007
+Xg_375 n_269 n_492 n_59 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1008
+Xg_376 n_267 n_492 n_272 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1009
+Xg_377 n_265 n_492 n_270 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1010
+Xg_378 n_263 n_492 n_268 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1011
+Xg_379 n_261 n_492 n_266 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1012
+Xg_380 n_259 n_492 n_264 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1013
+Xg_381 n_257 n_492 n_262 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1014
+Xg_382 n_255 n_492 n_260 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1015
+Xg_383 n_254 n_492 n_258 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1016
+Xg_384 n_462 n_492 n_256 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1019
+Xg_385 n_407 clk_presc n_191 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1020
+Xg_386 n_409 clk_presc n_194 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1021
+Xg_387 n_411 clk_presc n_57 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1024
+Xg_388 n_434 clk_presc n_182 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1025
+Xg_389 n_438 clk_presc n_185 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1026
+Xg_390 n_442 clk_presc n_188 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1029
+Xg_391 n_253 n_494 n_429 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1030
+Xg_392 n_251 n_494 n_252 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1031
+Xg_393 n_249 n_494 n_250 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1032
+Xg_394 n_461 n_494 n_248 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1033
+Xg_395 n_247 n_494 n_425 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1034
+Xg_396 n_245 n_494 n_246 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1035
+Xg_397 n_243 n_494 n_244 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1036
+Xg_398 n_459 n_494 n_242 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1037
+Xg_399 n_241 n_494 n_415 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1038
+Xg_400 n_239 n_494 n_240 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1039
+Xg_401 n_237 n_494 n_238 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1040
+Xg_402 n_458 n_494 n_236 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1043
+Xg_403 n_235 n_496 n_84 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1044
+Xg_404 n_230 n_496 n_150 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1045
+Xg_405 n_225 n_496 n_74 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1046
+Xg_406 n_220 n_496 n_55 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1047
+Xg_407 n_217 n_496 n_138 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1048
+Xg_408 n_215 n_496 n_166 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1051
+Xg_409 n_484 clk_presc mc VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$1401
+Xg_410 n_470 clk_presc feedback_tick VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$951
+Xg_411 n_454 clk_presc running VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$954
+Xg_412 n_457 clk_presc fault VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$957
+Xg_413 n_394 n_486 n_83 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$958
+Xg_414 n_391 n_486 n_82 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$959
+Xg_415 n_388 n_486 n_81 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$960
+Xg_416 n_385 n_486 n_80 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$961
+Xg_417 n_382 n_486 n_79 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$962
+Xg_418 n_378 n_486 n_78 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$963
+Xg_419 n_469 n_486 n_77 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$966
+Xg_420 n_349 n_488 n_53 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$967
+Xg_421 n_348 n_488 n_170 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$968
+Xg_422 n_347 n_488 n_176 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$969
+Xg_423 n_334 n_488 n_172 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$970
+Xg_424 n_332 n_488 n_67 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$971
+Xg_425 n_465 n_488 n_173 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$974
+Xg_426 n_326 n_490 n_316 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$975
+Xg_427 n_324 n_490 n_314 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$976
+Xg_428 n_322 n_490 n_312 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$977
+Xg_429 n_319 n_490 n_310 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$978
+Xg_430 n_317 n_490 n_308 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$979
+Xg_431 n_315 n_490 n_306 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$980
+Xg_432 n_313 n_490 n_304 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$981
+Xg_433 n_311 n_490 n_302 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$982
+Xg_434 n_309 n_490 n_300 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$983
+Xg_435 n_307 n_490 n_298 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$984
+Xg_436 n_305 n_490 n_296 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$985
+Xg_437 n_303 n_490 n_294 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$986
+Xg_438 n_301 n_490 n_320 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$987
+Xg_439 n_299 n_490 n_94 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$988
+Xg_440 n_297 n_490 n_93 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$989
+Xg_441 n_295 n_490 n_88 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$990
+Xg_442 n_464 n_490 n_65 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$993
+Xg_443 n_293 n_492 n_85 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$994
+Xg_444 n_291 n_492 n_70 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$995
+Xg_445 n_289 n_492 n_118 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$996
+Xg_446 n_287 n_492 n_292 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$997
+Xg_447 n_285 n_492 n_290 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$998
+Xg_448 n_283 n_492 n_288 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$ff.cc:337:slice$999
+Xg_449 n_281 n_492 n_286 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1
+* mapped instance: $auto$hilomap.cc:48:hilomap_worker$3671
+Xg_450 n_491 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__tiel
+* mapped instance: $auto$hilomap.cc:48:hilomap_worker$3673
+Xg_451 n_489 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__tiel
+* mapped instance: $auto$hilomap.cc:48:hilomap_worker$3675
+Xg_452 n_487 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__tiel
+* mapped instance: $auto$hilomap.cc:48:hilomap_worker$3677
+Xg_453 n_493 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__tiel
+* mapped instance: $auto$hilomap.cc:48:hilomap_worker$3679
+Xg_454 n_495 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__tiel
+* mapped instance: $auto$hilomap.cc:48:hilomap_worker$3681
+Xg_455 n_497 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__tiel
+* mapped instance: $auto$hilomap.cc:48:hilomap_worker$3683
+Xg_456 n_498 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__tiel
+* mapped instance: $auto$hilomap.cc:48:hilomap_worker$3685
+Xg_457 n_499 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__tiel
+* mapped instance: $auto$hilomap.cc:48:hilomap_worker$3687
+Xg_458 n_500 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__tiel
+* mapped instance: $auto$insbuf.cc:97:execute$3718
+Xg_459 running division_active[7] VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__buf_1
+* mapped instance: $auto$insbuf.cc:97:execute$3719
+Xg_460 n_498 division_active[8] VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__buf_1
+* mapped instance: $auto$insbuf.cc:97:execute$3720
+Xg_461 n_499 division_active[9] VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__buf_1
+* mapped instance: $auto$insbuf.cc:97:execute$3721
+Xg_462 running division_active[10] VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__buf_1
+* mapped instance: $auto$insbuf.cc:97:execute$3722
+Xg_463 n_500 division_active[11] VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__buf_1
+.ends fractional_32_33
