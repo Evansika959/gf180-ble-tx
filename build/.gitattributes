@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.gds -text
+tech/gf180mcuE.tech -whitespace
+*.spef -whitespace
+verification/divider_sta.txt -whitespace

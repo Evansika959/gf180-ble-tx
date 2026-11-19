@@ -1,0 +1,41 @@
+{
+  "technology": "gf180mcuE",
+  "source_revision": "7b70722e33c03fcb5dabcf4d479fb0822d9251c9",
+  "source_url": "https://github.com/fossi-foundation/open-pdks/blob/7b70722e33c03fcb5dabcf4d479fb0822d9251c9/gf180mcu/magic/gf180mcu.tech",
+  "defines": [
+    "-DTECHNAME=gf180mcuE",
+    "-DREVISION=1.0.575-local6m",
+    "-DMETALS6",
+    "-DMIM",
+    "-DTHICKMET0P9",
+    "-DHRPOLY1K"
+  ],
+  "template_sha256": "5b6bc9ba7a06decee05b0c8fdd983bc4bd5ef48f935010a043077157a374ca64",
+  "preprocessor_sha256": "505a4fcbdbf2fef8935ac6811be78f6bf66c63b647adcebfbdb34ef2fd230784",
+  "upstream_generated_sha256": "8efd71005f50c15edbc1994430c98e12a2b26cb8a10b67eb1459f7c33c6a728b",
+  "technology_sha256": "5c52407f72b40313a46c101134f21d0cac2dc42688ad05c5d7992a194dc973aa",
+  "vendor_modified": false,
+  "device_models_modified": false,
+  "schottky_import_fixes": true,
+  "via5_map_fix": {
+    "upstream_legacy_gds_layer": 129,
+    "physical_gds_layer": 82,
+    "evidence": "gf180mcuD/libs.tech/klayout/tech/lvs/rule_decks/layers_definitions.lvs: via5 = polygons(82,0)"
+  },
+  "metal6_contact_connectivity_fix": "connect *mtp *mtp, same residue policy as M1..M5",
+  "stack": "6LM / 9K top / MiM B, original GDS layers 81/53/82/75",
+  "rcfile": "/foss/designs/Diff_VCO_Second_Layout/glayout_diffbuf_opt_20261119T035353Z/technology_6m/extract.magicrc",
+  "technology_file": "/foss/designs/Diff_VCO_Second_Layout/glayout_diffbuf_opt_20261119T035353Z/technology_6m/gf180mcuE.tech",
+  "command": [
+    "/foss/designs/Diff_VCO_Second_Layout/vco_glayout_diff_buffer/.venv/bin/python",
+    "/foss/designs/Diff_VCO_Second_Layout/vco_glayout_diff_buffer/vendor/preproc.py",
+    "-DTECHNAME=gf180mcuE",
+    "-DREVISION=1.0.575-local6m",
+    "-DMETALS6",
+    "-DMIM",
+    "-DTHICKMET0P9",
+    "-DHRPOLY1K",
+    "/foss/designs/Diff_VCO_Second_Layout/vco_glayout_diff_buffer/vendor/gf180mcu.tech.in",
+    "/foss/designs/Diff_VCO_Second_Layout/glayout_diffbuf_opt_20261119T035353Z/technology_6m/gf180mcuE.upstream.tech"
+  ]
+}
