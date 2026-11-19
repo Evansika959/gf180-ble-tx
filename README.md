@@ -3,10 +3,18 @@
 A transmit-only Bluetooth Low Energy (1M PHY, 2.4 GHz GFSK) beacon on the
 GF180MCU open PDK, built with open-source tools.
 
-The first chip sends legacy advertising packets that a phone BLE scanner can
-see. It uses a crystal-calibrated, open-loop 2.4 GHz LC DCO with direct GFSK
-modulation through a fine capacitor bank, plus a switching PA at about 0 dBm.
-A closed-loop PLL is planned for the second chip. See [docs/plan.md](docs/plan.md).
+The chip sends legacy advertising packets that a phone BLE scanner can see.
+An integer-N PLL generates the carrier. A 1 MHz reference drives a phase
+detector, charge pump and RC loop filter. A differential VCO runs at half the
+RF frequency, and a ×2 doubler brings its output to 2.402–2.480 GHz. A 32/33
+prescaler and an integer-N divider close the feedback loop. A 6-bit `CFG` word
+selects the BLE channel. The digital block receives packets over a 1 Mbaud
+UART and produces a signed GFSK modulation word for the DAC.
+
+The integrated top cell, `A01_topcell`, is in [build/](build/README.md). The
+PLL block layouts are in [PLL/analog/](PLL/analog/README.md). The VCO supply
+regulator, DAC, RF output stage, pad ring and metal fill are not integrated
+yet. See [docs/plan.md](docs/plan.md) for the original project plan.
 
 ## Layout
 
